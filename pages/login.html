@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <title>StudentHub – Login &amp; Sign Up</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="../css/login.css" />
   </head>
   <body>
     <main class="auth-page">
@@ -20,7 +20,8 @@
           </div>
 
           <h1 class="hero-title">
-            Join your <span class="hero-highlight">campus community</span> in one place.
+            Join your <span class="hero-highlight">campus community</span> in
+            one place.
           </h1>
           <p class="hero-body">
             This phase focuses on the front-end only. Create an account, log in,
@@ -64,7 +65,12 @@
           </p>
 
           <!-- Global feedback message area -->
-          <div id="authAlert" class="alert" role="status" aria-live="polite"></div>
+          <div
+            id="authAlert"
+            class="alert"
+            role="status"
+            aria-live="polite"
+          ></div>
 
           <div class="auth-forms">
             <!-- Login form -->
@@ -94,7 +100,9 @@
 
                 <div class="field">
                   <div class="field-label-row">
-                    <label for="loginPassword" class="field-label">Password</label>
+                    <label for="loginPassword" class="field-label"
+                      >Password</label
+                    >
                     <span class="field-hint">At least 8 characters</span>
                   </div>
                   <input
@@ -123,7 +131,11 @@
                 </button>
                 <p class="auth-footnote">
                   New here?
-                  <button type="button" class="btn-secondary-inline" id="goToRegister">
+                  <button
+                    type="button"
+                    class="btn-secondary-inline"
+                    id="goToRegister"
+                  >
                     Create a free student account
                   </button>
                 </p>
@@ -141,7 +153,9 @@
               <div class="form-grid">
                 <div class="field">
                   <div class="field-label-row">
-                    <label for="registerName" class="field-label">Full name</label>
+                    <label for="registerName" class="field-label"
+                      >Full name</label
+                    >
                   </div>
                   <input
                     id="registerName"
@@ -157,7 +171,9 @@
 
                 <div class="field">
                   <div class="field-label-row">
-                    <label for="registerEmail" class="field-label">Student email</label>
+                    <label for="registerEmail" class="field-label"
+                      >Student email</label
+                    >
                     <span class="field-hint">We'll use this to log you in</span>
                   </div>
                   <input
@@ -174,7 +190,9 @@
 
                 <div class="field">
                   <div class="field-label-row">
-                    <label for="registerPassword" class="field-label">Password</label>
+                    <label for="registerPassword" class="field-label"
+                      >Password</label
+                    >
                     <span class="field-hint">Minimum 8 characters</span>
                   </div>
                   <input
@@ -204,7 +222,10 @@
                     placeholder="Type it again"
                     required
                   />
-                  <div id="registerConfirmPasswordError" class="field-error"></div>
+                  <div
+                    id="registerConfirmPasswordError"
+                    class="field-error"
+                  ></div>
                 </div>
               </div>
 
@@ -214,7 +235,11 @@
                 </button>
                 <p class="auth-footnote">
                   Already have an account?
-                  <button type="button" class="btn-secondary-inline" id="goToLogin">
+                  <button
+                    type="button"
+                    class="btn-secondary-inline"
+                    id="goToLogin"
+                  >
                     Log in instead
                   </button>
                 </p>
@@ -232,7 +257,8 @@
                 You are logged in to the StudentHub front-end prototype.
               </p>
               <p class="logged-in-meta" id="loggedInMeta">
-                Your session and account are stored in <code>localStorage</code>.
+                Your session and account are stored in
+                <code>localStorage</code>.
               </p>
             </div>
             <div class="logged-in-actions">
@@ -246,7 +272,6 @@
       </section>
     </main>
 
-    <script src="auth.js"></script>
+    <script src="../js/login.js"></script>
   </body>
 </html>
-
