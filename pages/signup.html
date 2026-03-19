@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Sign Up for StudentHub</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="stylesheet" href="../css/register.css" />
+  </head>
+  <body>
+    <div class="signup-page">
+      <div class="signup-header">
+        <h1 class="brand-text-main" style="font-size: 32px; color: #1d4ed8;">StudentHub</h1>
+      </div>
+
+      <main class="signup-card">
+        <div class="signup-title-container">
+          <h2>Create a new account</h2>
+          <p>It's quick and easy.</p>
+        </div>
+        
+        <div class="auth-divider"></div>
+        
+        <div id="authAlert" class="alert" role="status" aria-live="polite"></div>
+
+        <form id="registerForm" novalidate>
+          <div class="form-row">
+            <div class="field flex-1">
+              <input id="firstName" type="text" placeholder="First name" class="field-input" required />
+              <div id="firstNameError" class="field-error"></div>
+            </div>
+            <div class="field flex-1">
+              <input id="lastName" type="text" placeholder="Surname" class="field-input" required />
+              <div id="lastNameError" class="field-error"></div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="field flex-1">
+              <input id="registerEmail" type="email" placeholder="Mobile number or email address" class="field-input" required />
+              <div id="registerEmailError" class="field-error"></div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="field flex-1">
+              <input id="registerPassword" type="password" placeholder="New password" class="field-input" required />
+              <div id="registerPasswordError" class="field-error"></div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="field flex-1">
+              <input id="registerUsername" type="text" placeholder="Username" class="field-input" required />
+              <div id="registerUsernameError" class="field-error"></div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="field flex-1">
+              <textarea id="registerBio" placeholder="Bio (optional)" class="field-input" rows="2" style="resize: vertical; font-family: inherit; margin-top: 4px;"></textarea>
+            </div>
+          </div>
+
+          <div class="form-label">Profile Photo (optional)</div>
+          <div class="form-row">
+            <div class="field flex-1">
+              <input id="registerPhoto" type="file" accept="image/*" class="field-input" style="padding: 7px; background: #fff;" />
+              <div id="registerPhotoError" class="field-error"></div>
+            </div>
+          </div>
+
+          <div class="form-label">Date of birth</div>
+          <div class="form-row dob-row">
+            <select id="dobDay" class="field-input" required></select>
+            <select id="dobMonth" class="field-input" required>
+              <option value="1">Jan</option><option value="2">Feb</option><option value="3">Mar</option>
+              <option value="4">Apr</option><option value="5">May</option><option value="6">Jun</option>
+              <option value="7">Jul</option><option value="8">Aug</option><option value="9">Sep</option>
+              <option value="10">Oct</option><option value="11">Nov</option><option value="12">Dec</option>
+            </select>
+            <select id="dobYear" class="field-input" required></select>
+          </div>
+          <div id="dobError" class="field-error"></div>
+
+          <div class="form-label">Gender</div>
+          <div class="form-row gender-row">
+            <label class="gender-radio">
+              <span>Female</span>
+              <input type="radio" name="gender" value="female" required />
+            </label>
+            <label class="gender-radio">
+              <span>Male</span>
+              <input type="radio" name="gender" value="male" required />
+            </label>
+            <label class="gender-radio">
+              <span>Custom</span>
+              <input type="radio" name="gender" value="custom" required />
+            </label>
+          </div>
+          <div id="genderError" class="field-error"></div>
+
+          <p class="terms-text">
+            People who use our service may have uploaded your contact information to StudentHub.
+            <br/><br/>
+            By clicking Sign Up, you agree to our Terms, Privacy Policy and Cookies Policy.
+          </p>
+
+          <div class="signup-actions">
+            <button type="submit" class="btn-create-account" style="width: 200px; margin: 0 auto; display: block;">Sign Up</button>
+          </div>
+          
+          <div style="text-align: center; margin-top: 16px;">
+            <a href="login.html" class="muted-link" style="font-size: 14px;">Already have an account?</a>
+          </div>
+        </form>
+      </main>
+    </div>
+    <script src="../js/signup.js"></script>
+  </body>
+</html>

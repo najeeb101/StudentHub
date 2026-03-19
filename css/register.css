@@ -1,0 +1,157 @@
+/* Registration specific styles */
+.signup-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f0f2f5;
+  padding: 20px;
+}
+
+.signup-header {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.signup-card {
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 432px;
+  padding: 16px;
+}
+
+.signup-title-container h2 {
+  font-size: 32px;
+  font-weight: 600;
+  margin: 0;
+  color: #1c1e21;
+}
+
+.signup-title-container p {
+  font-size: 15px;
+  color: #606770;
+  margin: 4px 0 0 0;
+}
+
+.auth-divider {
+  border-bottom: 1px solid #dadde1;
+  margin: 16px 0;
+}
+
+.form-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+.field-input {
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid #ccd0d5;
+  padding: 10px;
+  font-size: 15px;
+  background: #f5f6f7;
+  outline: none;
+}
+
+.field-input:focus {
+  border-color: #1d4ed8;
+}
+
+.field-error {
+  font-size: 11px;
+  color: #b91c1c;
+  min-height: 14px;
+  margin-top: 4px;
+}
+
+.form-label {
+  font-size: 12px;
+  color: #606770;
+  margin-top: 8px;
+  margin-bottom: 4px;
+}
+
+.dob-row select {
+  flex: 1;
+}
+
+.gender-row label {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #ccd0d5;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.terms-text {
+  font-size: 11px;
+  color: #777;
+  line-height: 1.3;
+  margin-bottom: 20px;
+}
+
+.btn-create-account {
+  background-color: #00a400;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 18px;
+  font-weight: 700;
+  padding: 10px 32px;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  transition: background-color 0.15s;
+}
+
+.btn-create-account:hover {
+  background-color: #008a00;
+}
+
+.alert {
+  font-size: 12px;
+  border-radius: 5px;
+  padding: 8px 10px;
+  margin-bottom: 10px;
+  display: none;
+}
+
+.alert--error {
+  background: #ffebe8;
+  border: 1px solid #dd3c10;
+  color: #333;
+}
+
+.alert--success {
+  background: #ecfdf5;
+  border: 1px solid #bbf7d0;
+  color: #15803d;
+}
+
+.alert--visible {
+  display: block;
+}
+
+.muted-link {
+  color: #1877f2;
+  text-decoration: none;
+}
+
+.muted-link:hover {
+  text-decoration: underline;
+}

@@ -2,8 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>StudentHub – Login &amp; Sign Up</title>
+    <title>StudentHub – Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="../css/main.css" />
     <link rel="stylesheet" href="../css/login.css" />
   </head>
   <body>
@@ -12,7 +13,7 @@
         <!-- Left side: branding and copy -->
         <div class="auth-hero">
           <div class="brand-mark">
-            <img src="../media/StudentHub-logo.png" alt="StudentHub Logo" class="brand-logo" width="200">
+            <div class="brand-icon" style="width: 48px; height: 48px; border-radius: 12px; font-size: 24px;">S</div>
             <div>
               <div class="brand-text-main">StudentHub</div>
               <div class="brand-text-sub">Campus social space for students</div>
@@ -28,247 +29,72 @@
 
           <div class="hero-badges">
             <span class="badge">Connect. Learn. Belong</span>
-            <!-- <span class="badge badge--secondary">localStorage · JSON</span> -->
           </div>
         </div>
 
         <!-- Right side: authentication card -->
         <section class="auth-card" aria-label="Authentication">
-          <div class="auth-tabs" role="tablist">
-            <button
-              id="tab-login"
-              class="auth-tab auth-tab--active"
-              type="button"
-              role="tab"
-              aria-selected="true"
-              aria-controls="panel-login"
-            >
-              Log in
-            </button>
-            <button
-              id="tab-register"
-              class="auth-tab"
-              type="button"
-              role="tab"
-              aria-selected="false"
-              aria-controls="panel-register"
-            >
-              Create account
-            </button>
+          
+          <div class="auth-header">
+            <h2 class="auth-title">Log in</h2>
+            <p class="auth-subtitle">Join the student hub.</p>
           </div>
-
-          <p class="auth-subtitle">
-            Join the student hub.
-          </p>
 
           <!-- Global feedback message area -->
-          <div
-            id="authAlert"
-            class="alert"
-            role="status"
-            aria-live="polite"
-          ></div>
+          <div id="authAlert" class="alert" role="status" aria-live="polite"></div>
 
-          <div class="auth-forms">
-            <!-- Login form -->
-            <form
-              id="loginForm"
-              class="auth-form auth-form--active"
-              novalidate
-              aria-labelledby="tab-login"
-              role="tabpanel"
-            >
-              <div class="form-grid">
-                <div class="field">
-                  <div class="field-label-row">
-                    <label for="loginEmail" class="field-label">Email</label>
-                  </div>
-                  <input
-                    id="loginEmail"
-                    class="field-input"
-                    type="email"
-                    name="email"
-                    autocomplete="email"
-                    placeholder="you@student.edu"
-                    required
-                  />
-                  <div id="loginEmailError" class="field-error"></div>
-                </div>
-
-                <div class="field">
-                  <div class="field-label-row">
-                    <label for="loginPassword" class="field-label"
-                      >Password</label
-                    >
-                    <span class="field-hint">At least 8 characters</span>
-                  </div>
-                  <input
-                    id="loginPassword"
-                    class="field-input-password"
-                    type="password"
-                    name="password"
-                    autocomplete="current-password"
-                    placeholder="••••••••"
-                    required
-                  />
-                  <div id="loginPasswordError" class="field-error"></div>
-                </div>
+          <form id="loginForm" novalidate>
+            <div class="form-grid">
+              <div class="field">
+                <input
+                  id="loginEmail"
+                  class="field-input"
+                  style="padding: 14px; font-size: 16px;"
+                  type="email"
+                  name="email"
+                  autocomplete="email"
+                  placeholder="Email address"
+                  required
+                />
+                <div id="loginEmailError" class="field-error"></div>
               </div>
 
-              <div class="field-row">
-                <label class="checkbox-row">
-                  <input id="rememberMe" type="checkbox" checked />
-                  <span>Keep me signed in on this browser</span>
-                </label>
+              <div class="field">
+                <input
+                  id="loginPassword"
+                  class="field-input-password"
+                  style="padding: 14px; font-size: 16px;"
+                  type="password"
+                  name="password"
+                  autocomplete="current-password"
+                  placeholder="Password"
+                  required
+                />
+                <div id="loginPasswordError" class="field-error"></div>
               </div>
-
-              <div class="auth-actions">
-                <button type="submit" class="btn-primary">
-                  Log in to StudentHub
-                </button>
-                <p class="auth-footnote">
-                  New here?
-                  <button
-                    type="button"
-                    class="btn-secondary-inline"
-                    id="goToRegister"
-                  >
-                    Create a free student account
-                  </button>
-                </p>
-              </div>
-            </form>
-
-            <!-- Registration form -->
-            <form
-              id="registerForm"
-              class="auth-form"
-              novalidate
-              aria-labelledby="tab-register"
-              role="tabpanel"
-            >
-              <div class="form-grid">
-                <div class="field">
-                  <div class="field-label-row">
-                    <label for="registerName" class="field-label"
-                      >Full name</label
-                    >
-                  </div>
-                  <input
-                    id="registerName"
-                    class="field-input"
-                    type="text"
-                    name="name"
-                    autocomplete="name"
-                    placeholder="Alex Student"
-                    required
-                  />
-                  <div id="registerNameError" class="field-error"></div>
-                </div>
-
-                <div class="field">
-                  <div class="field-label-row">
-                    <label for="registerEmail" class="field-label"
-                      >Student email</label
-                    >
-                    <span class="field-hint">We'll use this to log you in</span>
-                  </div>
-                  <input
-                    id="registerEmail"
-                    class="field-input"
-                    type="email"
-                    name="email"
-                    autocomplete="email"
-                    placeholder="you@student.edu"
-                    required
-                  />
-                  <div id="registerEmailError" class="field-error"></div>
-                </div>
-
-                <div class="field">
-                  <div class="field-label-row">
-                    <label for="registerPassword" class="field-label"
-                      >Password</label
-                    >
-                    <span class="field-hint">Minimum 8 characters</span>
-                  </div>
-                  <input
-                    id="registerPassword"
-                    class="field-input-password"
-                    type="password"
-                    name="password"
-                    autocomplete="new-password"
-                    placeholder="Create a password"
-                    required
-                  />
-                  <div id="registerPasswordError" class="field-error"></div>
-                </div>
-
-                <div class="field">
-                  <div class="field-label-row">
-                    <label for="registerConfirmPassword" class="field-label">
-                      Confirm password
-                    </label>
-                  </div>
-                  <input
-                    id="registerConfirmPassword"
-                    class="field-input-password"
-                    type="password"
-                    name="confirmPassword"
-                    autocomplete="new-password"
-                    placeholder="Type it again"
-                    required
-                  />
-                  <div
-                    id="registerConfirmPasswordError"
-                    class="field-error"
-                  ></div>
-                </div>
-              </div>
-
-              <div class="auth-actions">
-                <button type="submit" class="btn-primary">
-                  Create StudentHub account
-                </button>
-                <p class="auth-footnote">
-                  Already have an account?
-                  <button
-                    type="button"
-                    class="btn-secondary-inline"
-                    id="goToLogin"
-                  >
-                    Log in instead
-                  </button>
-                </p>
-              </div>
-            </form>
-          </div>
-
-          <!-- Logged-in state -->
-          <section id="loggedInPanel" class="logged-in" aria-live="polite">
-            <div>
-              <h2 class="logged-in-heading" id="loggedInHeading">
-                Welcome back, Student
-              </h2>
-              <p class="logged-in-sub">
-                You are logged in to the StudentHub.
-              </p>
-              <!-- <p class="logged-in-meta" id="loggedInMeta">
-                Your session and account are stored in
-                <code>localStorage</code>.
-              </p> -->
             </div>
-            <!--<div class="logged-in-actions">
-              <span class="pill-tag">Phase 1 · Auth only</span> -->
-              <button id="logoutButton" class="btn-ghost" type="button">
-                Log out
+
+            <div class="auth-actions" style="margin-top: 16px;">
+              <button type="submit" class="btn-primary" style="padding: 12px; font-size: 20px; width: 100%; border-radius: 6px;">
+                Log In
               </button>
             </div>
-          </section>
+            
+            <div style="text-align: center; margin-top: 16px;">
+              <a href="#" class="muted-link" style="font-size: 14px;">Forgotten password?</a>
+            </div>
+
+            <div class="auth-divider"></div>
+            
+            <div class="auth-actions" style="margin-top: 0; display: flex; justify-content: center;">
+              <a href="signup.html" class="btn-create-account">
+                Create new account
+              </a>
+            </div>
+          </form>
         </section>
       </section>
     </main>
-
     <script src="../js/login.js"></script>
   </body>
 </html>

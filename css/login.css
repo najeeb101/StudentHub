@@ -1,16 +1,6 @@
-/* Base layout */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
+/* Page specific body layout */
 body {
-  margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background: linear-gradient(135deg, #0f172a, #1d4ed8);
-  color: #0f172a;
-  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -129,49 +119,44 @@ body {
   gap: 16px;
 }
 
-.auth-tabs {
-  display: flex;
-  gap: 8px;
-  background: #f3f4f6;
-  padding: 3px;
-  border-radius: 999px;
-}
-
-.auth-tab {
-  flex: 1;
+.auth-header {
   text-align: center;
-  padding: 8px 10px;
-  border-radius: 999px;
-  font-size: 13px;
-  font-weight: 500;
-  color: #4b5563;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+  margin-bottom: 12px;
 }
 
-.auth-tab--active {
-  background: #ffffff;
-  color: #1d4ed8;
-  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
+.auth-title {
+  margin: 0;
+  font-size: 24px;
+  color: #1f2937;
 }
 
 .auth-subtitle {
-  font-size: 13px;
+  margin: 4px 0 0 0;
+  font-size: 14px;
   color: #6b7280;
 }
 
-.auth-forms {
-  margin-top: 6px;
+.auth-divider {
+  border-bottom: 1px solid #e5e7eb;
+  margin: 20px 0;
 }
 
-.auth-form {
-  display: none;
+.btn-create-account {
+  background-color: #42b72a;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 12px 16px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: background-color 0.15s;
 }
 
-.auth-form--active {
-  display: block;
+.btn-create-account:hover {
+  background-color: #36a420;
 }
 
 .form-grid {
@@ -266,33 +251,7 @@ body {
   gap: 8px;
 }
 
-.btn-primary {
-  border: none;
-  border-radius: 999px;
-  background: linear-gradient(135deg, #2563eb, #22c55e);
-  color: #f9fafb;
-  padding: 9px 14px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  box-shadow: 0 12px 22px rgba(37, 99, 235, 0.35);
-  transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.1s ease;
-}
-
-.btn-primary:hover {
-  transform: translateY(-1px);
-  filter: brightness(1.02);
-  box-shadow: 0 16px 30px rgba(30, 64, 175, 0.45);
-}
-
-.btn-primary:active {
-  transform: translateY(0);
-  box-shadow: 0 8px 16px rgba(30, 64, 175, 0.5);
-}
+/* .btn-primary moved to main.css */
 
 .btn-secondary-inline {
   background: transparent;
