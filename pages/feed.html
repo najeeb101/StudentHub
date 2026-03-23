@@ -1,175 +1,188 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>StudentHub – Feed</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="../css/main.css" />
-    <link rel="stylesheet" href="../css/feed.css" />
-  </head>
-  <body>
-    <!-- Top Navbar -->
-    <header class="navbar">
-      <div class="nav-container">
-        <div class="brand-mark">
-          <div class="brand-icon">S</div>
-          <span class="brand-text">StudentHub</span>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>StudentHub – Feed</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../css/feed.css" />
+</head>
+
+<body>
+  <!-- Top Navbar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="brand-mark">
+        <img src="../media/StudentHub-logo.png" alt="StudentHub Logo"
+          style="width: 100px; height: 100px; object-fit: contain;" />
+        <span class="brand-text">StudentHub</span>
+      </div>
+      <div class="nav-actions">
+        <div class="user-profile">
+          <span class="username">Alex Student</span>
+          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alex&backgroundColor=b6e3f4" alt="User Avatar"
+            class="avatar" />
         </div>
-        <div class="nav-actions">
-          <div class="user-profile">
-            <span class="username">Alex Student</span>
-            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alex&backgroundColor=b6e3f4" alt="User Avatar" class="avatar" />
+        <button id="logoutBtn" class="btn-secondary-small" style="margin-left: 16px;">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="feed-layout">
+    <!-- Left Sidebar -->
+    <aside class="sidebar sidebar-left">
+      <nav class="side-nav">
+        <a href="#" class="nav-item active">
+          <img src="../media/home-button.png" class="nav-icon" alt="Home" /> Home
+        </a>
+        <a href="#" class="nav-item">
+          <img src="../media/notification-bell.png" class="nav-icon" alt="Notifications" /> Notifications
+        </a>
+        <a href="profile.html" class="nav-item">
+          <img src="../media/user.png" class="nav-icon nav-icon-profile" id="navProfileIcon" alt="Profile" /> Profile
+        </a>
+      </nav>
+      <button class="btn-primary btn-compose">Post</button>
+    </aside>
+
+    <!-- Main Feed Content -->
+    <section class="feed-main">
+
+      <!-- Create Post Box -->
+      <div class="compose-box">
+        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alex&backgroundColor=b6e3f4" alt="Avatar"
+          class="compose-avatar" />
+        <div class="compose-content">
+          <textarea placeholder="What's happening on campus?" class="compose-input"></textarea>
+          <div class="compose-actions">
+            <button class="btn-primary" type="button">Post</button>
           </div>
-          <button id="logoutBtn" class="btn-secondary-small" style="margin-left: 16px;">Logout</button>
         </div>
       </div>
-    </header>
 
-    <main class="feed-layout">
-      <!-- Left Sidebar -->
-      <aside class="sidebar sidebar-left">
-        <nav class="side-nav">
-          <a href="#" class="nav-item active">
-            <img src="../media/home-button.png" class="nav-icon" alt="Home" /> Home
-          </a>
-          <a href="#" class="nav-item">
-            <img src="../media/notification-bell.png" class="nav-icon" alt="Notifications" /> Notifications
-          </a>
-          <a href="profile.html" class="nav-item">
-            <img src="../media/user.png" class="nav-icon nav-icon-profile" id="navProfileIcon" alt="Profile" /> Profile
-          </a>
-        </nav>
-        <button class="btn-primary btn-compose">Post</button>
-      </aside>
-
-      <!-- Main Feed Content -->
-      <section class="feed-main">
-        
-        <!-- Create Post Box -->
-        <div class="compose-box">
-          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alex&backgroundColor=b6e3f4" alt="Avatar" class="compose-avatar" />
-          <div class="compose-content">
-            <textarea placeholder="What's happening on campus?" class="compose-input"></textarea>
-            <div class="compose-actions">
-              <button class="btn-primary" type="button">Post</button>
+      <!-- Feed Stream -->
+      <div class="post-stream">
+        <!-- Post 1 -->
+        <article class="post">
+          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Maria&backgroundColor=ffdfbf" alt="Maria's Avatar"
+            class="post-avatar" />
+          <div class="post-body">
+            <div class="post-header">
+              <span class="post-author">Maria Garcia</span>
+              <span class="post-username">@mariag</span>
+              <span class="post-time">· 2h</span>
+            </div>
+            <div class="post-text">
+              Just finished my final project for CS101! So relieved it's finally done. Anyone else taking the exam this
+              Friday? 🚀💻
+            </div>
+            <div class="post-footer">
+              <button class="action-btn">💬 12</button>
+              <button class="action-btn">🔁 4</button>
+              <button class="action-btn">❤️ 45</button>
+              <button class="action-btn">🔗</button>
             </div>
           </div>
-        </div>
+        </article>
 
-        <!-- Feed Stream -->
-        <div class="post-stream">
-          <!-- Post 1 -->
-          <article class="post">
-            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Maria&backgroundColor=ffdfbf" alt="Maria's Avatar" class="post-avatar" />
-            <div class="post-body">
-              <div class="post-header">
-                <span class="post-author">Maria Garcia</span>
-                <span class="post-username">@mariag</span>
-                <span class="post-time">· 2h</span>
-              </div>
-              <div class="post-text">
-                Just finished my final project for CS101! So relieved it's finally done. Anyone else taking the exam this Friday? 🚀💻
-              </div>
-              <div class="post-footer">
-                <button class="action-btn">💬 12</button>
-                <button class="action-btn">🔁 4</button>
-                <button class="action-btn">❤️ 45</button>
-                <button class="action-btn">🔗</button>
-              </div>
+        <!-- Post 2 -->
+        <article class="post">
+          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=David&backgroundColor=cddc39" alt="David's Avatar"
+            class="post-avatar" />
+          <div class="post-body">
+            <div class="post-header">
+              <span class="post-author">David Kim</span>
+              <span class="post-username">@dkim_eng</span>
+              <span class="post-time">· 5h</span>
             </div>
-          </article>
-
-          <!-- Post 2 -->
-          <article class="post">
-            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=David&backgroundColor=cddc39" alt="David's Avatar" class="post-avatar" />
-            <div class="post-body">
-              <div class="post-header">
-                <span class="post-author">David Kim</span>
-                <span class="post-username">@dkim_eng</span>
-                <span class="post-time">· 5h</span>
-              </div>
-              <div class="post-text">
-                The coffee line at the library cafe is insane right now. Send help (and maybe a macchiato). ☕📚
-              </div>
-              <div class="post-footer">
-                <button class="action-btn">💬 5</button>
-                <button class="action-btn">🔁 1</button>
-                <button class="action-btn">❤️ 89</button>
-                <button class="action-btn">🔗</button>
-              </div>
+            <div class="post-text">
+              The coffee line at the library cafe is insane right now. Send help (and maybe a macchiato). ☕📚
             </div>
-          </article>
-
-           <!-- Post 3 -->
-           <article class="post">
-            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah&backgroundColor=f48fb1" alt="Sarah's Avatar" class="post-avatar" />
-            <div class="post-body">
-              <div class="post-header">
-                <span class="post-author">Sarah Jenkins</span>
-                <span class="post-username">@sjenkins</span>
-                <span class="post-time">· 8h</span>
-              </div>
-              <div class="post-text">
-                Does anyone have the syllabus for HIST202? The professor's link on the portal is broken. Registration is tomorrow! 😭
-              </div>
-              <div class="post-footer">
-                <button class="action-btn">💬 2</button>
-                <button class="action-btn">🔁 0</button>
-                <button class="action-btn">❤️ 14</button>
-                <button class="action-btn">🔗</button>
-              </div>
+            <div class="post-footer">
+              <button class="action-btn">💬 5</button>
+              <button class="action-btn">🔁 1</button>
+              <button class="action-btn">❤️ 89</button>
+              <button class="action-btn">🔗</button>
             </div>
-          </article>
+          </div>
+        </article>
 
-        </div>
-      </section>
+        <!-- Post 3 -->
+        <article class="post">
+          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah&backgroundColor=f48fb1" alt="Sarah's Avatar"
+            class="post-avatar" />
+          <div class="post-body">
+            <div class="post-header">
+              <span class="post-author">Sarah Jenkins</span>
+              <span class="post-username">@sjenkins</span>
+              <span class="post-time">· 8h</span>
+            </div>
+            <div class="post-text">
+              Does anyone have the syllabus for HIST202? The professor's link on the portal is broken. Registration is
+              tomorrow! 😭
+            </div>
+            <div class="post-footer">
+              <button class="action-btn">💬 2</button>
+              <button class="action-btn">🔁 0</button>
+              <button class="action-btn">❤️ 14</button>
+              <button class="action-btn">🔗</button>
+            </div>
+          </div>
+        </article>
 
-      <!-- Right Sidebar -->
-      <aside class="sidebar sidebar-right">
-        <div class="widget">
-          <h3 class="widget-title">Trending on Campus</h3>
-          <ul class="trending-list">
-            <li>
-              <span class="trend-category">Academics</span>
-              <span class="trend-name">#FinalsWeek</span>
-              <span class="trend-stats">1,204 posts</span>
-            </li>
-            <li>
-              <span class="trend-category">Events</span>
-              <span class="trend-name">Spring Fest 2026</span>
-              <span class="trend-stats">855 posts</span>
-            </li>
-            <li>
-              <span class="trend-category">Sports</span>
-              <span class="trend-name">#VarsityMatch</span>
-              <span class="trend-stats">412 posts</span>
-            </li>
-          </ul>
-        </div>
-        
-        <div class="widget">
-          <h3 class="widget-title">Who to follow</h3>
-          <ul class="follow-list">
-            <li class="follow-item">
-              <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Prof&backgroundColor=e0e0e0" alt="Prof Avatar" class="follow-avatar" />
-              <div class="follow-info">
-                <span class="follow-name">Dr. Smith</span>
-                <span class="follow-username">@prof_smith</span>
-              </div>
-              <button class="btn-secondary-small">Follow</button>
-            </li>
-            <li class="follow-item">
-              <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Campus&backgroundColor=bcaaa4" alt="Campus Avatar" class="follow-avatar" />
-              <div class="follow-info">
-                <span class="follow-name">Campus News</span>
-                <span class="follow-username">@campus_update</span>
-              </div>
-              <button class="btn-secondary-small">Follow</button>
-            </li>
-          </ul>
-        </div>
-      </aside>
-    </main>
-    <script src="../js/feed.js"></script>
-  </body>
+      </div>
+    </section>
+
+    <!-- Right Sidebar -->
+    <aside class="sidebar sidebar-right">
+      <div class="widget">
+        <h3 class="widget-title">Trending on Campus</h3>
+        <ul class="trending-list">
+          <li>
+            <span class="trend-category">Academics</span>
+            <span class="trend-name">#FinalsWeek</span>
+            <span class="trend-stats">1,204 posts</span>
+          </li>
+          <li>
+            <span class="trend-category">Events</span>
+            <span class="trend-name">Spring Fest 2026</span>
+            <span class="trend-stats">855 posts</span>
+          </li>
+          <li>
+            <span class="trend-category">Sports</span>
+            <span class="trend-name">#VarsityMatch</span>
+            <span class="trend-stats">412 posts</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="widget">
+        <h3 class="widget-title">Who to follow</h3>
+        <ul class="follow-list">
+          <li class="follow-item">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Prof&backgroundColor=e0e0e0" alt="Prof Avatar"
+              class="follow-avatar" />
+            <div class="follow-info">
+              <span class="follow-name">Dr. Smith</span>
+              <span class="follow-username">@prof_smith</span>
+            </div>
+            <button class="btn-secondary-small">Follow</button>
+          </li>
+          <li class="follow-item">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Campus&backgroundColor=bcaaa4" alt="Campus Avatar"
+              class="follow-avatar" />
+            <div class="follow-info">
+              <span class="follow-name">Campus News</span>
+              <span class="follow-username">@campus_update</span>
+            </div>
+            <button class="btn-secondary-small">Follow</button>
+          </li>
+        </ul>
+      </div>
+    </aside>
+  </main>
+  <script src="../js/feed.js"></script>
+</body>
+
 </html>

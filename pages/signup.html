@@ -10,13 +10,13 @@
   <body>
     <div class="signup-page">
       <div class="signup-header">
-        <h1 class="brand-text-main" style="font-size: 32px; color: #1d4ed8;">StudentHub</h1>
+        <img src="../media/StudentHub-logo.png" alt="StudentHub Logo" style="width: 64px; height: 64px; object-fit: contain;" />
+        <span class="brand-text-main">StudentHub</span>
       </div>
 
       <main class="signup-card">
         <div class="signup-title-container">
           <h2>Create a new account</h2>
-          <p>It's quick and easy.</p>
         </div>
         
         <div class="auth-divider"></div>
@@ -37,8 +37,15 @@
 
           <div class="form-row">
             <div class="field flex-1">
-              <input id="registerEmail" type="email" placeholder="Mobile number or email address" class="field-input" required />
+              <input id="registerEmail" type="email" placeholder="Email address" class="field-input" required />
               <div id="registerEmailError" class="field-error"></div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="field flex-1">
+              <input id="registerMobile" type="tel" placeholder="Mobile number" class="field-input" required />
+              <div id="registerMobileError" class="field-error"></div>
             </div>
           </div>
 
@@ -92,10 +99,6 @@
             <label class="gender-radio">
               <span>Male</span>
               <input type="radio" name="gender" value="male" required />
-            </label>
-            <label class="gender-radio">
-              <span>Custom</span>
-              <input type="radio" name="gender" value="custom" required />
             </label>
           </div>
           <div id="genderError" class="field-error"></div>

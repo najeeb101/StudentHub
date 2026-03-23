@@ -81,6 +81,7 @@
     const firstName = document.getElementById("firstName").value.trim();
     const lastName = document.getElementById("lastName").value.trim();
     const email = document.getElementById("registerEmail").value.trim().toLowerCase();
+    const mobile = document.getElementById("registerMobile").value.trim();
     const password = document.getElementById("registerPassword").value;
     
     // New fields
@@ -113,6 +114,10 @@
       document.getElementById("registerEmailError").textContent = "Email is required.";
       hasError = true;
     }
+    if (!mobile) {
+      document.getElementById("registerMobileError").textContent = "Mobile number is required.";
+      hasError = true;
+    }
     if (!password || password.length < 6) {
       document.getElementById("registerPasswordError").textContent = "Password must be at least 6 characters.";
       hasError = true;
@@ -141,10 +146,15 @@
     
     // Check if email or username already exists
     const existingEmail = users.find((u) => typeof u.email === "string" && u.email.toLowerCase() === email);
+    const existingMobile = users.find((u) => typeof u.mobile === "string" && u.mobile === mobile);
     const existingUsername = users.find((u) => u.username && u.username.toLowerCase() === username.toLowerCase());
 
     if (existingEmail) {
       setGlobalAlert("An account with this email already exists.", "error");
+      return;
+    }
+    if (existingMobile) {
+      setGlobalAlert("An account with this mobile number already exists.", "error");
       return;
     }
     if (existingUsername) {
@@ -184,6 +194,7 @@
         lastName,
         username,
         email,
+        mobile,
         password,
         bio,
         photo: photoBase64,
