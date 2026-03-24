@@ -1,10 +1,13 @@
 // js/feed.js
 (function () {
-  const CURRENT_USER_KEY = "sh_currentUser";
+  const CURRENT_USER_KEY = "sh_currentUser"; // Key for storing the currently logged-in user's data in localStorage/sessionStorage.
+  const POSTS_KEY = "sh_posts";
+  const USERS_KEY = "sh_users"; // For potential future use if we want to store multiple users or a user directory.
+  // Defining the above keys for storing user and post data in localStorage/sessionStorage.
 
   function safeParse(json, fallback) {
     try {
-      return JSON.parse(json) || fallback;
+      return JSON.parse(json) ?? fallback;
     } catch {
       return fallback;
     }
@@ -13,10 +16,178 @@
   function getActiveUser() {
     const localRaw = localStorage.getItem(CURRENT_USER_KEY);
     const sessionRaw = sessionStorage.getItem(CURRENT_USER_KEY);
-    if (localRaw) return safeParse(localRaw, null);
-    if (sessionRaw) return safeParse(sessionRaw, null);
-    return null;
+    return safeParse(localRaw, null) || safeParse(sessionRaw, null);
   }
+
+  function loadUsers() {
+    const usersRaw = localStorage.getItem(USERS_KEY);
+    return safeParse(usersRaw, []);
+  } // Function to load the list of users from localStorage, returning an empty array if no users are found or if parsing fails.
+
+  function loadPosts() {
+    const postsRaw = localStorage.getItem(POSTS_KEY);
+    return safeParse(postsRaw, []);
+  } // Function to load the list of posts from localStorage, returning an empty array if no posts are found or if parsing fails.
+
+  function savePosts(p) {
+    localStorage.setItem(POSTS_KEY, JSON.stringify(p));
+  } // Function to save the list of posts to localStorage by converting it to a JSON string.
+
+  function saveUsers(u) {
+    localStorage.setItem(USERS_KEY, JSON.stringify(u));
+  } // Function to save the list of users to localStorage by converting it to a JSON string.
+
+  function genId(prefix) {
+    return prefix +"_" + Math.random().toString(36).substr(2, 9);
+  } // Function to generate a unique ID by combining a given prefix with a random string.
+
+  function timeAgo(iso) {
+    const mins = Math.floor((Date.now() - new Date(iso)) / 60000);
+    if (mins < 1) return "Just now";
+    if (mins < 60) return mins + " minute" + (mins !== 1 ? "s" : "") + " ago";
+    const hours = Math.floor(mins / 60);
+    if (hours < 24) return hours + " hour" + (hours !== 1 ? "s" : "") + " ago";
+  } // Function to convert an ISO timestamp into a human-readable "time ago" format, such as "Just now", "5 minutes ago", or "2 hours ago".
+
+  function avatarSrc(user) {
+    if (user && user.photo) {
+      return user.photo;
+    }
+    const seed = encodeURIComponent((user && (user.email || user.name)) || "user");
+    return user.photo || `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(user.email || user.name)}&backgroundColor=b6e3f4`;
+  } // Function to determine the avatar image source for a user. If the user has a custom photo, it returns that; otherwise, it generates a unique avatar using the Dicebear Avatars API based on the user's email or name.
+
+  function escapeHtml(str) {
+    return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  } // Function for code injection security
+
+  function syncUser(user) {
+    localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
+    const users = loadUsers();
+    const idx = users.findIndex(u => u.id === user.id);
+    if (idx !== -1) {
+      users[idx] = user;
+      saveUsers(users);
+    }
+    } // Function to synchronize the current user's data across localStorage and the users list. It updates the current user's information in localStorage and also updates the corresponding user entry in the users list if it exists.
+
+    function renderComment(c) {
+      return `<div class="comment">
+        <strong class="comment-author">${escapeHtml(c.authorName)}</strong>
+        <span class= "comment-text">${escapeHtml(c.text)}</span>
+        <span class="comment-time">${timeAgo(c.createdAt)}</span>
+      </div>`;
+    }
+
+    function renderPost(post, currentUser) {
+      const isOwn = post.authorId === currentUser.id;
+      const liked = post.likes.includes(currentUser.id);
+
+      const article = document.createElement("article");
+      article.className = "post";
+      article.dateset.postId = post.id;
+
+      article.innerHTML = `
+        <img src="${escapeHtml(post.authorPhoto || avatarArc({email: post.authorName}))}" class="post-avatar" alt="avatar"/>
+        <div class="post-body">
+          <div class="post-header">
+          <a href="posot.html?postId=${post.authorId}" class="post-author">${escapeHtml(post.authorName)}</a>
+          <span class="post-username">@${escapeHtml(post.authorUsername)}</span>
+          <span class="post-time">${timeAgo(post.timestamp)}</span>
+          ${isOwn ? `<button class="delete-btn" data-post-id="${post.id}" title="Delete Post">🗑️</button>` : ""}
+        </div>
+        <div class ="post-text">${escapeHtml(post.text)}</div>
+        <div class="post-footer">
+          <button classs="action-btn comment-toggle-btn" data-post-id="${post.id}">💬 ${post.comments.length}</button>
+          <button class="action-btn like-btn ${liked ? "liked" : ""}" data-post-id="${post.id}">${liked ? "❤️" : "🤍"} ${post.likes.length}</button>
+        </div>
+        <div class="comments-section" id="comments-${post.id}" style="display:none;">
+          <div class="comments-list">${post.comments.map(renderComment).join("")}</div>\
+          <div class="comment-form">
+            <input class="comment-input" type="text" placeholder="Write a comment..." maxlength="500"/>
+            <button class="btn-primary comment-submit-btn" data-post-id="${post.id}">Post</button>
+          </div>
+        </div>
+      </div>`;
+      return article;
+    }
+
+    function renderFeed(currentUser) {
+      const stream = document.querySelector(".post-stream");
+      if (!stream) return;
+
+      const allPosts = loadPosts();
+      const following = currentUser.following || [];
+
+      let posts = following.length === 0 ? allPosts : allPosts.filter(p => p.authorId === currentUser.id || following.includes(p.authorId));
+      posts = posts.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+      stream.innerHTML = "";
+      if(posts.length === 0) {
+        stream.innerHTML = `<p style="=text-align:center;color:#888;padding:32px;">No posts to show. Follow some users or create a post!</p>`;
+        return;
+      }
+      posts.forEach(post => stream.appendChild(renderPost(post, currentUser)));
+    }
+
+    function renderWhoTOFollow(currentUser) {
+      const list = document.querySelector(".follow-list");
+      if(!list) return;
+      const users = loadUsers();
+      const following = currentUser.following || [];
+      const others = users.filter(u => u.id !== currentUser.id);
+
+      if(others.length === 0) {
+        list.innerHTML = `<li style="=color:#888;font-size:14px;padding:8px 0;">No other users found.</li>`;
+        return;
+      }
+
+      list.innerHTML = others.map(u => {
+        const isFollowing = following.includes(u.id);
+        return `<li class="follow-item">
+          <img src="${escapeHtml(avatarSrc(u))}" class="follow-avatar" alt="avatar"/>
+          <div class="follow-info">
+            <a href="profile.html?userId=${u.id}" class="follow-name">${escapeHtml(u.name)}</a>
+            <span class="follow-username">@${escapeHtml(u.username || "")}</span>
+          </div>
+          <button class="btn-secondary-small follow-btn" data-user-id="${u.id}" data-following="${isFollowing}">${isFollowing ? "Unfollow" : "Follow"}"</button>
+        </li>`;
+      }).join("");
+    }
+
+
+
+
+    /////////////
+
+    function setupEventListeners(currentUser) {}
+
+    function setupFollowEvents(currentUser) {
+      const list = document.querySelector(".follow-list");
+      if(!list) return;
+
+      list.addEventListener("click", e => {
+        if(!e.target.classList.contains("follow-btn")) return;
+        const userId = e.target.dataset.userId;
+        const isFollowing = e.target.dataset.following === "true";
+        
+        const users = loadUsers();
+        const me = users.find(u => u.id === currentUser.id);
+        if(!me) return;
+        if(!me.following) me.following = [];
+
+        if(isFollowing) me.following = me.following.filter(id => id !== userId);
+        else me.following.push(userId);
+
+        saveUsers(users);
+        currentUser.following = me.following;
+        syncUser(currentUser);
+        renderWhoTOFollow(currentUser);
+        renderFeed(currentUser);
+      });
+    }
+
+
 
   function handleLogout() {
     localStorage.removeItem(CURRENT_USER_KEY);
@@ -33,29 +204,44 @@
       return;
     }
 
+    const users = loadUsers();
+    user = users.find(u => u.id === user.id) || user; // Sync with latest user data if available
+
+
+
     // Populate user profile info in navbar and compose box
     const displayName = user.name || user.email || "Student";
     const avatarDataUrl = user.photo || null;
 
     const usernameEls = document.querySelectorAll(".user-profile .username");
-    const avatarEls = document.querySelectorAll(".user-profile .avatar, .compose-avatar");
-    
-    usernameEls.forEach(el => {
-      el.textContent = displayName;
+    if(usernameEls) usernameEls.textContent = user.name;
+    document.querySelectorAll(".user-profile .avatar, .compose-avatar").forEach(el => {
+      el.src = avatarSrc(user);
     });
 
-    avatarEls.forEach(el => {
-      if (avatarDataUrl) {
-        el.src = avatarDataUrl;
-      } else {
-        const seed = encodeURIComponent(user.email || displayName);
-        el.src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}&backgroundColor=b6e3f4`;
-      }
-    });
+    // avatarEls.forEach(el => {
+    //   if (avatarDataUrl) {
+    //     el.src = avatarDataUrl;
+    //   } else {
+    //     const seed = encodeURIComponent(user.email || displayName);
+    //     el.src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}&backgroundColor=b6e3f4`;
+    //   }
+    // });
 
     const navProfileIcon = document.getElementById("navProfileIcon");
-    if (navProfileIcon && avatarDataUrl) {
-      navProfileIcon.src = avatarDataUrl;
+    if (navProfileIcon) {
+      navProfileIcon.src = avatarSrc(user);
+    }
+
+    const profileNavLink = document.querySelector('a[href="profile.html"]');
+    if (profileNavLink) { profileNavLink.setAttribute("href", `profile.html?userId=${user.id}`); }
+
+    const userProfileEls = document.querySelector(".user-profile");
+    if (userProfileEls) {
+      userProfileEls.style.cursor = "pointer";
+      userProfileEls.addEventListener("click", () => {
+        window.location.href = `profile.html?userId=${user.id}`;
+      });
     }
 
     // Setup logout button
@@ -65,9 +251,16 @@
     }
   }
 
+  renderFeed(user);
+  renderWhoTOFollow(user);
+  setupFollowEvents(user);
+  setupCreatePost(user);
+  setupFeedEvents(user);
+
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", initFeed);
   } else {
     initFeed();
   }
+
 })();
