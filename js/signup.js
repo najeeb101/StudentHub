@@ -52,70 +52,30 @@
     alert.className = "alert alert--visible " + (type === "error" ? "alert--error" : "alert--success");
   }
 
-  function populateDates() {
-    const daySelect = document.getElementById("dobDay");
-    const yearSelect = document.getElementById("dobYear");
-    if (daySelect) {
-      for (let i = 1; i <= 31; i++) {
-        const opt = document.createElement("option");
-        opt.value = i;
-        opt.textContent = i;
-        daySelect.appendChild(opt);
-      }
-    }
-    if (yearSelect) {
-      const currentYear = new Date().getFullYear();
-      for (let i = currentYear; i >= 1905; i--) {
-        const opt = document.createElement("option");
-        opt.value = i;
-        opt.textContent = i;
-        yearSelect.appendChild(opt);
-      }
-    }
-  }
-
   function handleRegisterSubmit(event) {
     event.preventDefault();
     clearFieldErrors();
 
-    const firstName = document.getElementById("firstName").value.trim();
-    const lastName = document.getElementById("lastName").value.trim();
+    const name = document.getElementById("registerName").value.trim();
     const email = document.getElementById("registerEmail").value.trim().toLowerCase();
-    const mobile = document.getElementById("registerMobile").value.trim();
     const password = document.getElementById("registerPassword").value;
-    
-    // New fields
-    const usernameInput = document.getElementById("registerUsername");
-    const username = usernameInput ? usernameInput.value.trim() : "";
-    
-    const bioInput = document.getElementById("registerBio");
-    const bio = bioInput ? bioInput.value.trim() : "";
-    
+    const username = document.getElementById("registerUsername").value.trim();
+    const bio = document.getElementById("registerBio");value.trim();
     const photoFileInput = document.getElementById("registerPhoto");
-    
     const dobDay = document.getElementById("dobDay").value;
     const dobMonth = document.getElementById("dobMonth").value;
     const dobYear = document.getElementById("dobYear").value;
-
     const genderNode = document.querySelector('input[name="gender"]:checked');
     const gender = genderNode ? genderNode.value : null;
 
     let hasError = false;
 
-    if (!firstName) {
+    if (!name) {
       document.getElementById("firstNameError").textContent = "First name is required.";
-      hasError = true;
-    }
-    if (!lastName) {
-      document.getElementById("lastNameError").textContent = "Last name is required.";
       hasError = true;
     }
     if (!email) {
       document.getElementById("registerEmailError").textContent = "Email is required.";
-      hasError = true;
-    }
-    if (!mobile) {
-      document.getElementById("registerMobileError").textContent = "Mobile number is required.";
       hasError = true;
     }
     if (!password || password.length < 6) {
@@ -123,9 +83,7 @@
       hasError = true;
     }
     if (!username) {
-      if (document.getElementById("registerUsernameError")) {
-        document.getElementById("registerUsernameError").textContent = "Username is required.";
-      }
+      document.getElementById("registerUsernameError").textContent = "Username is required.";
       hasError = true;
     }
     if (!dobDay || !dobMonth || !dobYear) {
@@ -189,9 +147,7 @@
     function finishRegistration(photoBase64) {
       const newUser = {
         id: createUserId(),
-        name: firstName + " " + lastName,
-        firstName,
-        lastName,
+        name,
         username,
         email,
         mobile,
@@ -199,6 +155,7 @@
         bio,
         photo: photoBase64,
         dob: `${dobYear}-${dobMonth}-${dobDay}`,
+        following: [],
         gender,
         createdAt: new Date().toISOString(),
       };

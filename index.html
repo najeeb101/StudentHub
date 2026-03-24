@@ -55,6 +55,64 @@
   <div class="loading-text">Loading StudentHub...</div>
 
   <script>
+
+    (function seedData(){
+      if(localStorage.getItem("sh_seed_done")) return
+
+      const users = [
+        {
+          id: "u_seed1",
+          name: "Paul Eliza",
+          firstName:"Paul",
+          lastName:"Eliza",
+          username: "paul_eliza",
+          email: "pe2105536@student.qu.edu.qa",
+          mobile: "+974 5555 1234",
+          password: "password123",
+          bio: "Computer Science student at Qatar University. Tech enthusiast and avid coder.",
+          photo: null,
+          dob: "2000-05-15",
+          gender: "male",
+          following: ["u_seed2"],
+          createdAt: new Date(Date.now() - 86400000 * 10).toISOString() // 10 days ago
+        },
+        {
+          id: "u_seed2",
+            name: "Omar Hassan",
+            firstName: "Omar",
+            lastName: "Hassan",
+            username: "omar_h",
+            email: "omar@student.edu",
+            mobile: "0502222222",
+            password: "123456",
+            bio: "Engineering student 🔧 | Football fan | GPA survivor",
+            photo: null,
+            dob: "2002-8-20",
+            gender: "male",
+            following: ["u_seed1", "u_seed3"],
+            createdAt: new Date(Date.now() - 86400000 * 8).toISOString(),
+        },
+        {
+            id: "u_seed3",
+            name: "Lena Park",
+            firstName: "Lena",
+            lastName: "Park",
+            username: "lena_p",
+            email: "lena@student.edu",
+            mobile: "0503333333",
+            password: "123456",
+            bio: "Design enthusiast 🎨 | Art minor | Making things pretty since 2001",
+            photo: null,
+            dob: "2001-3-7",
+            gender: "female",
+            following: ["u_seed1"],
+            createdAt: new Date(Date.now() - 86400000 * 5).toISOString(),
+          },
+      ];
+      localStorage.setItem("sh_users", JSON.stringify(users));
+      localStorage.setItem("sh_seed_done", "1");
+    })();
+
     // Entry Point Router Logic
     (function () {
       const CURRENT_USER_KEY = "sh_currentUser";

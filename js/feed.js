@@ -159,8 +159,9 @@
 
 
     /////////////
-
-    function setupEventListeners(currentUser) {}
+    function setupCreatePost(currentUser){}
+    function submitPost(){}
+    function setupFeedEvents(currentUser) {}
 
     function setupFollowEvents(currentUser) {
       const list = document.querySelector(".follow-list");
@@ -189,11 +190,6 @@
 
 
 
-  function handleLogout() {
-    localStorage.removeItem(CURRENT_USER_KEY);
-    sessionStorage.removeItem(CURRENT_USER_KEY);
-    window.location.href = "login.html";
-  }
 
   function initFeed() {
     const user = getActiveUser();
@@ -207,26 +203,11 @@
     const users = loadUsers();
     user = users.find(u => u.id === user.id) || user; // Sync with latest user data if available
 
-
-
-    // Populate user profile info in navbar and compose box
-    const displayName = user.name || user.email || "Student";
-    const avatarDataUrl = user.photo || null;
-
-    const usernameEls = document.querySelectorAll(".user-profile .username");
+    const usernameEls = document.querySelector(".user-profile .username");
     if(usernameEls) usernameEls.textContent = user.name;
     document.querySelectorAll(".user-profile .avatar, .compose-avatar").forEach(el => {
       el.src = avatarSrc(user);
     });
-
-    // avatarEls.forEach(el => {
-    //   if (avatarDataUrl) {
-    //     el.src = avatarDataUrl;
-    //   } else {
-    //     const seed = encodeURIComponent(user.email || displayName);
-    //     el.src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}&backgroundColor=b6e3f4`;
-    //   }
-    // });
 
     const navProfileIcon = document.getElementById("navProfileIcon");
     if (navProfileIcon) {
@@ -251,13 +232,19 @@
     }
   }
 
+  document.getElementById("logoutBtn")?.addEventListener("click", () => {
+    localStorage.removeItem(CURRENT_USER_KEY);
+    sessionStorage.removeItem(CURRENT_USER_KEY);
+    window.location.href = "login.html";
+  });
+  s
   renderFeed(user);
   renderWhoTOFollow(user);
   setupFollowEvents(user);
   setupCreatePost(user);
   setupFeedEvents(user);
-
-  if (document.readyState === "loading") {
+   
+   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", initFeed);
   } else {
     initFeed();
