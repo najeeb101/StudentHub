@@ -26,12 +26,8 @@
         <form id="registerForm" novalidate>
           <div class="form-row">
             <div class="field flex-1">
-              <input id="firstName" type="text" placeholder="First name" class="field-input" required />
-              <div id="firstNameError" class="field-error"></div>
-            </div>
-            <div class="field flex-1">
-              <input id="lastName" type="text" placeholder="Surname" class="field-input" required />
-              <div id="lastNameError" class="field-error"></div>
+              <input id="registerName" type="text" placeholder="Full name" class="field-input" required />
+              <div id="registerNameError" class="field-error"></div>
             </div>
           </div>
 
@@ -39,13 +35,6 @@
             <div class="field flex-1">
               <input id="registerEmail" type="email" placeholder="Email address" class="field-input" required />
               <div id="registerEmailError" class="field-error"></div>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="field flex-1">
-              <input id="registerMobile" type="tel" placeholder="Mobile number" class="field-input" required />
-              <div id="registerMobileError" class="field-error"></div>
             </div>
           </div>
 
@@ -68,27 +57,6 @@
               <textarea id="registerBio" placeholder="Bio (optional)" class="field-input" rows="2" style="resize: vertical; font-family: inherit; margin-top: 4px;"></textarea>
             </div>
           </div>
-
-          <div class="form-label">Profile Photo (optional)</div>
-          <div class="form-row">
-            <div class="field flex-1">
-              <input id="registerPhoto" type="file" accept="image/*" class="field-input" style="padding: 7px; background: #fff;" />
-              <div id="registerPhotoError" class="field-error"></div>
-            </div>
-          </div>
-
-          <div class="form-label">Date of birth</div>
-          <div class="form-row dob-row">
-            <select id="dobDay" class="field-input" required></select>
-            <select id="dobMonth" class="field-input" required>
-              <option value="1">Jan</option><option value="2">Feb</option><option value="3">Mar</option>
-              <option value="4">Apr</option><option value="5">May</option><option value="6">Jun</option>
-              <option value="7">Jul</option><option value="8">Aug</option><option value="9">Sep</option>
-              <option value="10">Oct</option><option value="11">Nov</option><option value="12">Dec</option>
-            </select>
-            <select id="dobYear" class="field-input" required></select>
-          </div>
-          <div id="dobError" class="field-error"></div>
 
           <div class="form-label">Gender</div>
           <div class="form-row gender-row">

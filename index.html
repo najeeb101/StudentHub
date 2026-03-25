@@ -55,6 +55,183 @@
   <div class="loading-text">Loading StudentHub...</div>
 
   <script>
+
+    (function seedData(){
+      if(localStorage.getItem("sh_seed_done")) return
+
+      const users = [
+        {
+          id: "u_seed1",
+            name: "Sarah Ahmed",
+            firstName: "Sarah",
+            lastName: "Ahmed",
+            username: "sarah_a",
+            email: "sarah@student.edu",
+            mobile: "0501111111",
+            password: "123456",
+            bio: "CS junior | Coffee lover ☕ | Always debugging something",
+            photo: null,
+            dob: "2003-5-12",
+            gender: "female",
+            following: ["u_seed2"],
+            createdAt: new Date(Date.now() - 86400000 * 10).toISOString(),
+          },
+        {
+          id: "u_seed2",
+            name: "Omar Hassan",
+            firstName: "Omar",
+            lastName: "Hassan",
+            username: "omar_h",
+            email: "omar@student.edu",
+            mobile: "0502222222",
+            password: "123456",
+            bio: "Engineering student 🔧 | Football fan | GPA survivor",
+            photo: null,
+            dob: "2002-8-20",
+            gender: "male",
+            following: ["u_seed1", "u_seed3"],
+            createdAt: new Date(Date.now() - 86400000 * 8).toISOString(),
+        },
+        {
+            id: "u_seed3",
+            name: "Lena Park",
+            firstName: "Lena",
+            lastName: "Park",
+            username: "lena_p",
+            email: "lena@student.edu",
+            mobile: "0503333333",
+            password: "123456",
+            bio: "Design enthusiast 🎨 | Art minor | Making things pretty since 2001",
+            photo: null,
+            dob: "2001-3-7",
+            gender: "female",
+            following: ["u_seed1"],
+            createdAt: new Date(Date.now() - 86400000 * 5).toISOString(),
+          },
+      ];
+
+      const posts = [
+        {
+          id: "p_seed1",
+          authorId: "u_seed1",
+            authorName: "Sarah Ahmed",
+            authorUsername: "sarah_a",
+            authorPhoto: null,
+            text: "Just submitted my OS assignment 10 minutes before the deadline. I am built different 😤",
+            timestamp: new Date(Date.now() - 3600000 * 5).toISOString(),
+            likes: ["u_seed2", "u_seed3"],
+            comments: [
+              {
+                id: "c_s1a",
+                authorId: "u_seed2",
+                authorName: "Omar Hassan",
+                authorUsername: "omar_h",
+                text: "Respect 🫡",
+                timestamp: new Date(Date.now() - 3600000 * 4).toISOString(),
+              },
+            ],
+          },
+          {
+            id: "p_seed2",
+            authorId: "u_seed2",
+            authorName: "Omar Hassan",
+            authorUsername: "omar_h",
+            authorPhoto: null,
+            text: "The cafeteria ran out of shawarma again. This is not okay. This is a crisis.",
+            timestamp: new Date(Date.now() - 3600000 * 8).toISOString(),
+            likes: ["u_seed1", "u_seed3"],
+            comments: [
+              {
+                id: "c_s2a",
+                authorId: "u_seed3",
+                authorName: "Lena Park",
+                authorUsername: "lena_p",
+                text: "I felt this in my soul 😭",
+                timestamp: new Date(Date.now() - 3600000 * 7).toISOString(),
+              },
+              {
+                id: "c_s2b",
+                authorId: "u_seed1",
+                authorName: "Sarah Ahmed",
+                authorUsername: "sarah_a",
+                text: "Every single Thursday!",
+                timestamp: new Date(Date.now() - 3600000 * 6).toISOString(),
+              },
+            ],
+          },
+          {
+            id: "p_seed3",
+            authorId: "u_seed3",
+            authorName: "Lena Park",
+            authorUsername: "lena_p",
+            authorPhoto: null,
+            text: "Finished my UI mockup for the semester project. Figma files are my love language 🎨✨",
+            timestamp: new Date(Date.now() - 3600000 * 12).toISOString(),
+            likes: ["u_seed1"],
+            comments: [],
+          },
+          {
+            id: "p_seed4",
+            authorId: "u_seed1",
+            authorName: "Sarah Ahmed",
+            authorUsername: "sarah_a",
+            authorPhoto: null,
+            text: "Anyone have notes from yesterday's Data Structures lecture? I was... indisposed (napping).",
+            timestamp: new Date(Date.now() - 86400000 * 1).toISOString(),
+            likes: ["u_seed3"],
+            comments: [
+              {
+                id: "c_s4a",
+                authorId: "u_seed2",
+                authorName: "Omar Hassan",
+                authorUsername: "omar_h",
+                text: "I'll send them to you tonight!",
+                timestamp: new Date(
+                  Date.now() - 86400000 * 1 + 3600000,
+                ).toISOString(),
+              },
+            ],
+          },
+          {
+            id: "p_seed5",
+            authorId: "u_seed2",
+            authorName: "Omar Hassan",
+            authorUsername: "omar_h",
+            authorPhoto: null,
+            text: "Group project meeting in 10 minutes and I'm still in bed. Send prayers.",
+            timestamp: new Date(Date.now() - 86400000 * 2).toISOString(),
+            likes: ["u_seed1", "u_seed3"],
+            comments: [],
+          },
+          {
+            id: "p_seed6",
+            authorId: "u_seed3",
+            authorName: "Lena Park",
+            authorUsername: "lena_p",
+            authorPhoto: null,
+            text: "Hot take: the library at 2am hits different. So peaceful. Highly recommend finals week study sessions 📚",
+            timestamp: new Date(Date.now() - 86400000 * 3).toISOString(),
+            likes: ["u_seed1", "u_seed2"],
+            comments: [
+              {
+                id: "c_s6a",
+                authorId: "u_seed1",
+                authorName: "Sarah Ahmed",
+                authorUsername: "sarah_a",
+                text: "This is literally my life right now 😅",
+                timestamp: new Date(
+                  Date.now() - 86400000 * 3 + 3600000,
+                ).toISOString(),
+              },
+            ],
+          },
+        ];
+
+      localStorage.setItem("sh_users", JSON.stringify(users));
+      localStorage.setItem("sh_posts", JSON.stringify(posts));
+      localStorage.setItem("sh_seed_done", "1");
+    })();
+
     // Entry Point Router Logic
     (function () {
       const CURRENT_USER_KEY = "sh_currentUser";
