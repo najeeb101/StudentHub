@@ -53,7 +53,7 @@
     if (user && user.photo) {
       return user.photo;
     }
-    const seed = encodeURIComponent((user.id && (user.email || user.name)) || "user");
+    const seed = encodeURIComponent((user && (user.email || user.name)) || "user");
     return `https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}&backgroundColor=b6e3f4`;
   } // Function to determine the avatar image source for a user. If the user has a custom photo, it returns that; otherwise, it generates a unique avatar using the Dicebear Avatars API based on the user's email or name.
 
