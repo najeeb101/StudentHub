@@ -54,7 +54,7 @@
       return user.photo;
     }
     const seed = encodeURIComponent((user && (user.email || user.name)) || "user");
-    return user.photo || `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(user.email || user.name)}&backgroundColor=b6e3f4`;
+    return `https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}&backgroundColor=b6e3f4`;
   } // Function to determine the avatar image source for a user. If the user has a custom photo, it returns that; otherwise, it generates a unique avatar using the Dicebear Avatars API based on the user's email or name.
 
   function escapeHtml(str) {
@@ -133,6 +133,7 @@
     function renderWhoTOFollow(currentUser) {
       const list = document.querySelector(".follow-list");
       if(!list) return;
+
       const users = loadUsers();
       const following = currentUser.following || [];
       const others = users.filter(u => u.id !== currentUser.id);
@@ -159,9 +160,99 @@
 
 
     /////////////
-    function setupCreatePost(currentUser){}
-    function submitPost(){}
-    function setupFeedEvents(currentUser) {}
+    function setupCreatePost(currentUser){
+      const textarea = document.getElementById(".compose-input");
+      const postBtn = document.querySelector(".compose-actions .btn-primary");
+      const sidebarBtn = document.querySelector(".btn-compose");
+
+    function submitPost(){
+      const text = textarea ? textarea.value.trim() : "";
+      if (!text) return;
+      const posts = loadPosts();
+      posts.unshift({
+        id: genId("p"),
+        authorId: currentUser.id,
+        authorName: currentUser.name,
+        authorUsername: currentUser.username || currentUser.email.split("@")[0],
+        authorPhoto: currentUser.photo || null,
+        text,
+        timestamp: new Date().toISOString(),
+        likes: [],
+        comments: [],
+      });
+      savePosts(posts);
+      if (textarea) textarea.value = "";
+      renderFeed(currentUser);
+    }
+
+    if (postBtn) {
+      postBtn.addEventListener("click", submitPost);
+    }
+    if (sidebarBtn) {
+      sidebarBtn.addEventListener("click", () => textarea && textarea.focus());
+    }
+    if (textarea) {
+      textarea.addEventListener("keydown", e => {
+        if (e.key === "Enter" && (!e.shiftKey || e.metaKey)) submitPost();
+      });
+    }
+  }
+
+    function setupFeedEvents(currentUser) {
+      const stream = document.querySelector(".post-stream");
+      if(!stream) return;
+
+      stream.addEventListener("click", e => {
+        const btn = e.target;
+        const postId = btn.dataset.postId;
+
+        if (btn.classList.contains("like-btn")) {
+          const posts = loadPosts();
+          const post = posts.find(p => p.id === postId);
+          if (!post) return;
+          const idx = post.likes.indexOf(currentUser.id);
+          if (idx === -1) post.likes.push(currentUser.id);
+          else post.likes.splice(idx, 1);
+          savePosts(posts);
+          renderFeed(currentUser);
+        } // Like/unlike post
+
+        if (btn.classList.contains("delete-btn")) {
+          savePosts(loadPosts().filter(p => p.id !== postId));
+          renderFeed(currentUser);
+        } // Delete post
+
+        if (btn.classList.contains("comment-toggle-btn")) {
+          const section = document.getElementById("comments-" + postId);
+          if (section) section.style.display = section.style.display === "none" ? "block" : "none";
+        } // Toggle comments section
+
+        if (btn.classList.contains("comment-submit-btn")) {
+          const section = document.getElementById("comments-" + postId);
+          const input = section && section.querySelector(".comment-input");
+          if (!input || !input.value.trim()) return;
+
+          const posts = loadPosts();
+          const post = posts.find(p => p.id === postId);
+          if (!post) return;
+          post.comments.push({
+            id: genId("c"),
+            authorId: currentUser.id,
+            authorName: currentUser.name,
+            authorUsername: currentUser.username || currentUser.email.split("@")[0],
+            text: input.value.trim(),
+            timestamp: new Date().toISOString(),
+          });
+          savePosts(posts);
+          renderFeed(currentUser);
+
+          const newSection = document.getElementById("comments-" + postId);
+          if (newSection) {
+            newSection.style.display = "block";
+          }
+        }
+        }); // Add comment
+    }
 
     function setupFollowEvents(currentUser) {
       const list = document.querySelector(".follow-list");
@@ -188,9 +279,6 @@
       });
     }
 
-
-
-
   function initFeed() {
     const user = getActiveUser();
     
@@ -207,7 +295,7 @@
     if(usernameEls) usernameEls.textContent = user.name;
     document.querySelectorAll(".user-profile .avatar, .compose-avatar").forEach(el => {
       el.src = avatarSrc(user);
-    });
+    }); // Set profile avatar in header and compose section
 
     const navProfileIcon = document.getElementById("navProfileIcon");
     if (navProfileIcon) {
@@ -228,7 +316,9 @@
     // Setup logout button
     const logoutBtn = document.getElementById("logoutBtn");
     if (logoutBtn) {
-      logoutBtn.addEventListener("click", handleLogout);
+      logoutBtn.addEventListener("click", () =>{
+        window.location.href = "login.html";
+      });
     }
   }
 
@@ -237,7 +327,7 @@
     sessionStorage.removeItem(CURRENT_USER_KEY);
     window.location.href = "login.html";
   });
-  s
+  
   renderFeed(user);
   renderWhoTOFollow(user);
   setupFollowEvents(user);

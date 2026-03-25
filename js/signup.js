@@ -60,18 +60,14 @@
     const email = document.getElementById("registerEmail").value.trim().toLowerCase();
     const password = document.getElementById("registerPassword").value;
     const username = document.getElementById("registerUsername").value.trim();
-    const bio = document.getElementById("registerBio");value.trim();
-    const photoFileInput = document.getElementById("registerPhoto");
-    const dobDay = document.getElementById("dobDay").value;
-    const dobMonth = document.getElementById("dobMonth").value;
-    const dobYear = document.getElementById("dobYear").value;
+    const bio = document.getElementById("registerBio").value.trim();
     const genderNode = document.querySelector('input[name="gender"]:checked');
     const gender = genderNode ? genderNode.value : null;
 
     let hasError = false;
 
     if (!name) {
-      document.getElementById("firstNameError").textContent = "First name is required.";
+      document.getElementById("registerNameError").textContent = "Name is required.";
       hasError = true;
     }
     if (!email) {
@@ -84,10 +80,6 @@
     }
     if (!username) {
       document.getElementById("registerUsernameError").textContent = "Username is required.";
-      hasError = true;
-    }
-    if (!dobDay || !dobMonth || !dobYear) {
-      document.getElementById("dobError").textContent = "Complete your birthday.";
       hasError = true;
     }
     if (!gender) {
@@ -104,15 +96,10 @@
     
     // Check if email or username already exists
     const existingEmail = users.find((u) => typeof u.email === "string" && u.email.toLowerCase() === email);
-    const existingMobile = users.find((u) => typeof u.mobile === "string" && u.mobile === mobile);
     const existingUsername = users.find((u) => u.username && u.username.toLowerCase() === username.toLowerCase());
 
     if (existingEmail) {
       setGlobalAlert("An account with this email already exists.", "error");
-      return;
-    }
-    if (existingMobile) {
-      setGlobalAlert("An account with this mobile number already exists.", "error");
       return;
     }
     if (existingUsername) {
@@ -120,41 +107,14 @@
       return;
     }
 
-    // Process photo as Base64 if attached
-    if (photoFileInput && photoFileInput.files && photoFileInput.files[0]) {
-      const file = photoFileInput.files[0];
-      if (file.size > 2 * 1024 * 1024) { // 2MB limit
-        document.getElementById("registerPhotoError").textContent = "File is too large (max 2MB).";
-        setGlobalAlert("Please fix the errors above.", "error");
-        return;
-      }
-      
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        finishRegistration(e.target.result);
-      };
-      reader.onerror = function() {
-        if (document.getElementById("registerPhotoError")) {
-          document.getElementById("registerPhotoError").textContent = "Error reading file.";
-        }
-        setGlobalAlert("Please fix the errors above.", "error");
-      };
-      reader.readAsDataURL(file);
-    } else {
-      finishRegistration(null);
-    }
-
-    function finishRegistration(photoBase64) {
       const newUser = {
         id: createUserId(),
         name,
         username,
         email,
-        mobile,
         password,
         bio,
-        photo: photoBase64,
-        dob: `${dobYear}-${dobMonth}-${dobDay}`,
+        photo: null,
         following: [],
         gender,
         createdAt: new Date().toISOString(),
@@ -165,20 +125,15 @@
       setCurrentUser(newUser);
 
       setGlobalAlert("Account created successfully. Redirecting...", "success");
-      setTimeout(() => {
-        window.location.href = "feed.html";
-      }, 500);
+      setTimeout(() => {window.location.href = "feed.html";}, 500);
     }
-  }
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", () => {
-      populateDates();
       const form = document.getElementById("registerForm");
       if (form) form.addEventListener("submit", handleRegisterSubmit);
     });
   } else {
-    populateDates();
     const form = document.getElementById("registerForm");
     if (form) form.addEventListener("submit", handleRegisterSubmit);
   }
