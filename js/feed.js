@@ -1,4 +1,3 @@
-// js/feed.js
 (function () {
   const CURRENT_USER_KEY = "sh_currentUser"; // Key for storing the currently logged-in user's data in localStorage/sessionStorage.
   const POSTS_KEY = "sh_posts";
@@ -38,15 +37,16 @@
   } // Function to save the list of users to localStorage by converting it to a JSON string.
 
   function genId(prefix) {
-    return prefix +"_" + Math.random().toString(36).substr(2, 9);
+    return prefix +"_" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
   } // Function to generate a unique ID by combining a given prefix with a random string.
 
   function timeAgo(iso) {
     const mins = Math.floor((Date.now() - new Date(iso)) / 60000);
     if (mins < 1) return "Just now";
-    if (mins < 60) return mins + " minute" + (mins !== 1 ? "s" : "") + " ago";
+    if (mins < 60) return mins + " m";
     const hours = Math.floor(mins / 60);
-    if (hours < 24) return hours + " hour" + (hours !== 1 ? "s" : "") + " ago";
+    if (hours < 24) return hours + " h";
+    return Math.floor(hours / 24) + " d";
   } // Function to convert an ISO timestamp into a human-readable "time ago" format, such as "Just now", "5 minutes ago", or "2 hours ago".
 
   function avatarSrc(user) {
@@ -85,24 +85,24 @@
 
       const article = document.createElement("article");
       article.className = "post";
-      article.dateset.postId = post.id;
+      article.dataset.postId = post.id;
 
       article.innerHTML = `
-        <img src="${escapeHtml(post.authorPhoto || avatarArc({email: post.authorName}))}" class="post-avatar" alt="avatar"/>
+      <img src="${escapeHtml(post.authorPhoto || avatarSrc({email: post.authorName}))}" class="post-avatar" alt="avatar"/>
         <div class="post-body">
           <div class="post-header">
-          <a href="posot.html?postId=${post.authorId}" class="post-author">${escapeHtml(post.authorName)}</a>
+          <a href="profile.html?id=${post.authorId}" class="post-author">${escapeHtml(post.authorName)}</a>
           <span class="post-username">@${escapeHtml(post.authorUsername)}</span>
           <span class="post-time">${timeAgo(post.timestamp)}</span>
           ${isOwn ? `<button class="delete-btn" data-post-id="${post.id}" title="Delete Post">🗑️</button>` : ""}
         </div>
         <div class ="post-text">${escapeHtml(post.text)}</div>
         <div class="post-footer">
-          <button classs="action-btn comment-toggle-btn" data-post-id="${post.id}">💬 ${post.comments.length}</button>
+          <button class="action-btn comment-toggle-btn" data-post-id="${post.id}">💬 ${post.comments.length}</button>
           <button class="action-btn like-btn ${liked ? "liked" : ""}" data-post-id="${post.id}">${liked ? "❤️" : "🤍"} ${post.likes.length}</button>
         </div>
         <div class="comments-section" id="comments-${post.id}" style="display:none;">
-          <div class="comments-list">${post.comments.map(renderComment).join("")}</div>\
+          <div class="comments-list">${post.comments.map(renderComment).join("")}</div>
           <div class="comment-form">
             <input class="comment-input" type="text" placeholder="Write a comment..." maxlength="500"/>
             <button class="btn-primary comment-submit-btn" data-post-id="${post.id}">Post</button>
@@ -124,7 +124,7 @@
 
       stream.innerHTML = "";
       if(posts.length === 0) {
-        stream.innerHTML = `<p style="=text-align:center;color:#888;padding:32px;">No posts to show. Follow some users or create a post!</p>`;
+      stream.innerHTML= `<p style="text-align:center;color:#888;padding:32px;">No posts to display.</p>`;
         return;
       }
       posts.forEach(post => stream.appendChild(renderPost(post, currentUser)));
@@ -139,7 +139,7 @@
       const others = users.filter(u => u.id !== currentUser.id);
 
       if(others.length === 0) {
-        list.innerHTML = `<li style="=color:#888;font-size:14px;padding:8px 0;">No other users found.</li>`;
+        list.innerHTML= `<li style="color:#888;font-size:14px;padding:8px 0;"> No other users yet.</li>`;
         return;
       }
 
@@ -151,17 +151,13 @@
             <a href="profile.html?userId=${u.id}" class="follow-name">${escapeHtml(u.name)}</a>
             <span class="follow-username">@${escapeHtml(u.username || "")}</span>
           </div>
-          <button class="btn-secondary-small follow-btn" data-user-id="${u.id}" data-following="${isFollowing}">${isFollowing ? "Unfollow" : "Follow"}"</button>
+          <button class="btn-secondary-small follow-btn" data-user-id="${u.id}" data-following="${isFollowing}">${isFollowing ? "Unfollow" : "Follow"}</button>
         </li>`;
       }).join("");
     }
 
-
-
-
-    /////////////
     function setupCreatePost(currentUser){
-      const textarea = document.getElementById(".compose-input");
+      const textarea = document.querySelector(".compose-input");
       const postBtn = document.querySelector(".compose-actions .btn-primary");
       const sidebarBtn = document.querySelector(".btn-compose");
 
@@ -234,7 +230,9 @@
 
           const posts = loadPosts();
           const post = posts.find(p => p.id === postId);
+
           if (!post) return;
+
           post.comments.push({
             id: genId("c"),
             authorId: currentUser.id,
@@ -267,7 +265,6 @@
         const me = users.find(u => u.id === currentUser.id);
         if(!me) return;
         if(!me.following) me.following = [];
-
         if(isFollowing) me.following = me.following.filter(id => id !== userId);
         else me.following.push(userId);
 
@@ -280,7 +277,7 @@
     }
 
   function initFeed() {
-    const user = getActiveUser();
+    let user = getActiveUser();
     
     // Check authentication: if no user is found, redirect back to login
     if (!user) {
@@ -303,7 +300,7 @@
     }
 
     const profileNavLink = document.querySelector('a[href="profile.html"]');
-    if (profileNavLink) { profileNavLink.setAttribute("href", `profile.html?userId=${user.id}`); }
+    if (profileNavLink) profileNavLink.setAttribute("href", `profile.html?userId=${user.id}`);
 
     const userProfileEls = document.querySelector(".user-profile");
     if (userProfileEls) {
@@ -314,30 +311,22 @@
     }
 
     // Setup logout button
-    const logoutBtn = document.getElementById("logoutBtn");
-    if (logoutBtn) {
-      logoutBtn.addEventListener("click", () =>{
-        window.location.href = "login.html";
-      });
-    }
+    document.getElementById("logoutBtn")?.addEventListener("click", () => {
+      localStorage.removeItem(CURRENT_USER_KEY);
+      sessionStorage.removeItem(CURRENT_USER_KEY);
+      window.location.href = "login.html";
+    });
+    
+    renderFeed(user);
+    renderWhoTOFollow(user);
+    setupCreatePost(user);
+    setupFeedEvents(user);
+    setupFollowEvents(user);
   }
 
-  document.getElementById("logoutBtn")?.addEventListener("click", () => {
-    localStorage.removeItem(CURRENT_USER_KEY);
-    sessionStorage.removeItem(CURRENT_USER_KEY);
-    window.location.href = "login.html";
-  });
-  
-  renderFeed(user);
-  renderWhoTOFollow(user);
-  setupFollowEvents(user);
-  setupCreatePost(user);
-  setupFeedEvents(user);
-   
    if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", initFeed);
   } else {
     initFeed();
   }
-
 })();
