@@ -2,14 +2,14 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>StudentHub - Profile</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StudentHub – Profile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="../css/main.css" />
     <link rel="stylesheet" href="../css/feed.css" />
     <link rel="stylesheet" href="../css/profile.css" />
   </head>
-
   <body>
+    <!-- Navbar -->
     <header class="navbar">
       <div class="nav-container">
         <div class="brand-mark">
@@ -23,7 +23,7 @@
         <div class="nav-actions">
           <div class="user-profile">
             <span class="username"></span>
-            <img id="navAvatar" src="" alt="avatar" class="avatar" />
+            <img id="navAvatar" src="" alt="Avatar" class="avatar" />
           </div>
           <a
             id="feedLink"
@@ -44,7 +44,7 @@
     </header>
 
     <main class="profile-page">
-      <!-- Profile -->
+      <!-- Profile Card -->
       <section class="profile-card">
         <div class="profile-top">
           <img
@@ -55,10 +55,10 @@
           />
           <div class="profile-details">
             <h2 id="profileName" class="profile-name"></h2>
-            <span id="profileUsername " class="profile-username"></span>
+            <span id="profileUsername" class="profile-username"></span>
             <p id="profileBio" class="profile-bio"></p>
             <div class="profile-stats">
-              <span><strong id="statposts">0</strong> Posts</span>
+              <span><strong id="statPosts">0</strong> Posts</span>
               <span class="stat-btn" id="followingBtn"
                 ><strong id="statFollowing">0</strong> Following</span
               >
@@ -70,15 +70,17 @@
           <div id="profileActions" class="profile-actions"></div>
         </div>
 
-        <!-- Own Profile Edit (Default Hidden)-->
-
-        <script src="../js/profile.js"></script>
+        <!-- Edit Profile Form (own profile only, hidden by default) -->
         <div id="editForm" class="edit-form" style="display: none">
           <h3>Edit Profile</h3>
           <div id="editAlert" class="edit-alert"></div>
           <div class="edit-field">
             <label for="editUsername">Username</label>
-            <input type="text" id="editUsername" class="edit-input" />
+            <input
+              type="text"
+              id="editUsername"
+              class="edit-input"
+              maxlength="30"
             />
           </div>
           <div class="edit-field">
@@ -87,17 +89,18 @@
               id="editBio"
               class="edit-input"
               rows="3"
+              maxlength="160"
               style="resize: vertical; font-family: inherit"
             ></textarea>
           </div>
           <div class="edit-field">
             <label for="editPhoto">Profile Photo</label>
             <input
-              type="text"
+              type="file"
               id="editPhoto"
               accept="image/*"
               class="edit-input"
-              style="padding: 7px"
+              style="padding: 7px; background: #fff"
             />
           </div>
           <div class="edit-actions">
@@ -107,7 +110,7 @@
             <button
               class="btn-secondary-small"
               id="cancelEditBtn"
-              style="background: gray"
+              style="background: #6b7280"
             >
               Cancel
             </button>
@@ -115,22 +118,24 @@
         </div>
       </section>
 
-      <!-- Own Posts -->
+      <!-- User's Posts -->
       <section class="profile-posts-section">
         <h3 class="posts-heading">Posts</h3>
         <div id="userPostStream" class="post-stream"></div>
       </section>
-
-      <!-- Followers Modal -->
-      <div id="usersModal" class="modal-overlay" style="display: none">
-        <div class="modal-box">
-          <div class="modal-header">
-            <h3 class="modalTitle">Users</h3>
-            <button id="modalCloseBtn" class="modal-close">X</button>
-          </div>
-          <ul id="modalUserList" class="modal-user-list"></ul>
-        </div>
-      </div>
     </main>
+
+    <!-- Followers / Following Modal -->
+    <div id="usersModal" class="modal-overlay" style="display: none">
+      <div class="modal-box">
+        <div class="modal-header">
+          <h3 id="modalTitle">Users</h3>
+          <button id="modalCloseBtn" class="modal-close">✕</button>
+        </div>
+        <ul id="modalUserList" class="modal-user-list"></ul>
+      </div>
+    </div>
+
+    <script src="../js/profile.js"></script>
   </body>
 </html>
