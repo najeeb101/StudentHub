@@ -73,6 +73,9 @@
     if (!email) {
       document.getElementById("registerEmailError").textContent = "Email is required.";
       hasError = true;
+    } else if (!email.includes("@")) {
+      document.getElementById("registerEmailError").textContent = "Email must be in the correct format.";
+      hasError = true;
     }
     if (!password || password.length < 6) {
       document.getElementById("registerPasswordError").textContent = "Password must be at least 6 characters.";
