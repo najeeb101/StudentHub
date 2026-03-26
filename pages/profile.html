@@ -16,7 +16,7 @@
           <img
             src="../media/StudentHub-logo.png"
             alt="StudentHub Logo"
-            style="width: 100px; height: 100px; object-fit: contain"
+            class="brand-logo"
           />
           <span class="brand-text">StudentHub</span>
         </div>
@@ -28,15 +28,10 @@
           <a
             id="feedLink"
             href="feed.html"
-            class="btn-secondary-small"
-            style="margin-left: 16px; text-decoration: none"
+            class="btn-secondary-small nav-cta nav-link-btn"
             >Feed</a
           >
-          <button
-            id="logoutBtn"
-            class="btn-secondary-small"
-            style="margin-left: 8px"
-          >
+          <button id="logoutBtn" class="btn-secondary-small nav-cta-tight">
             Logout
           </button>
         </div>
@@ -95,13 +90,23 @@
           </div>
           <div class="edit-field">
             <label for="editPhoto">Profile Photo</label>
-            <input
-              type="file"
-              id="editPhoto"
-              accept="image/*"
-              class="edit-input"
-              style="padding: 7px; background: #fff"
-            />
+            <div class="edit-photo-row">
+              <input
+                type="file"
+                id="editPhoto"
+                accept="image/*"
+                class="edit-input"
+                style="padding: 7px; background: #fff"
+              />
+              <button
+                type="button"
+                id="removePhotoBtn"
+                class="btn-secondary-small"
+                style="background: #6b7280"
+              >
+                Remove Photo
+              </button>
+            </div>
           </div>
           <div class="edit-actions">
             <button class="btn-primary" id="saveProfileBtn">

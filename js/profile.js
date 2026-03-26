@@ -1,4 +1,5 @@
 (function () {
+  const DEFAULT_AVATAR = "../media/user.png";
   const USERS_KEY = "sh_users";
   const POSTS_KEY = "sh_posts";
   const CURRENT_USER_KEY = "sh_currentUser";
@@ -23,6 +24,19 @@
   function saveUsers(u) {
     localStorage.setItem(USERS_KEY, JSON.stringify(u));
   }
+
+  function ensureDefaultPhotos(users) {
+    let changed = false;
+    const updated = users.map((user) => {
+      if (user && !user.photo) {
+        changed = true;
+        return { ...user, photo: DEFAULT_AVATAR };
+      }
+      return user;
+    });
+    if (changed) saveUsers(updated);
+    return updated;
+  }
   function loadPosts() {
     return safeParse(localStorage.getItem(POSTS_KEY), []);
   }
@@ -41,10 +55,7 @@
 
   function avatarSrc(user) {
     if (user && user.photo) return user.photo;
-    const seed = encodeURIComponent(
-      (user && (user.email || user.name)) || "user",
-    );
-    return `https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}&backgroundColor=b6e3f4`;
+    return DEFAULT_AVATAR;
   }
 
   function escapeHtml(str) {
@@ -233,9 +244,13 @@
       return;
     }
 
-    let users = loadUsers();
+    let users = ensureDefaultPhotos(loadUsers());
     const freshCurrentUser =
       users.find((u) => u.id === currentUser.id) || currentUser;
+    if (freshCurrentUser && !freshCurrentUser.photo) {
+      freshCurrentUser.photo = DEFAULT_AVATAR;
+      localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(freshCurrentUser));
+    }
 
     // Navbar
     const usernameEl = document.querySelector(".user-profile .username");
@@ -318,6 +333,8 @@
     if (isOwnProfile) {
       actionsDiv.innerHTML = `<button class="btn-primary" id="editProfileBtn">Edit Profile</button>`;
 
+      let removePhotoRequested = false;
+
       document
         .getElementById("editProfileBtn")
         .addEventListener("click", () => {
@@ -325,6 +342,12 @@
             profileUser.username || "";
           document.getElementById("editBio").value = profileUser.bio || "";
           document.getElementById("editPhoto").value = "";
+          removePhotoRequested = false;
+          const removePhotoBtn = document.getElementById("removePhotoBtn");
+          if (removePhotoBtn) {
+            const hasCustomPhoto = profileUser.photo && profileUser.photo !== DEFAULT_AVATAR;
+            removePhotoBtn.style.display = hasCustomPhoto ? "inline-flex" : "none";
+          }
           showAlert("", "");
           document.getElementById("editForm").style.display = "block";
           document
@@ -335,6 +358,30 @@
       document.getElementById("cancelEditBtn").addEventListener("click", () => {
         document.getElementById("editForm").style.display = "none";
       });
+
+      const removePhotoBtn = document.getElementById("removePhotoBtn");
+      if (removePhotoBtn) {
+        removePhotoBtn.addEventListener("click", () => {
+          removePhotoRequested = false;
+          const photoInput = document.getElementById("editPhoto");
+          if (photoInput) photoInput.value = "";
+
+          const updatedUsers = loadUsers();
+          const idx = updatedUsers.findIndex((u) => u.id === profileUser.id);
+          if (idx === -1) return;
+          updatedUsers[idx].photo = DEFAULT_AVATAR;
+          saveUsers(updatedUsers);
+          localStorage.setItem(
+            CURRENT_USER_KEY,
+            JSON.stringify(updatedUsers[idx]),
+          );
+          profileUser = updatedUsers[idx];
+          displayProfile(profileUser);
+          if (navAvatar) navAvatar.src = updatedUsers[idx].photo;
+          removePhotoBtn.style.display = "none";
+          showAlert("Photo removed.", "success");
+        });
+      }
 
       document
         .getElementById("saveProfileBtn")
@@ -362,13 +409,13 @@
             return;
           }
 
-          function applyEdit(photoBase64) {
+          function applyEdit(photoValue, shouldSetPhoto) {
             const updatedUsers = loadUsers();
             const idx = updatedUsers.findIndex((u) => u.id === profileUser.id);
             if (idx === -1) return;
             updatedUsers[idx].username = newUsername;
             updatedUsers[idx].bio = newBio;
-            if (photoBase64) updatedUsers[idx].photo = photoBase64;
+            if (shouldSetPhoto) updatedUsers[idx].photo = photoValue;
             saveUsers(updatedUsers);
             localStorage.setItem(
               CURRENT_USER_KEY,
@@ -376,7 +423,7 @@
             );
             profileUser = updatedUsers[idx];
             displayProfile(profileUser);
-            if (photoBase64 && navAvatar) navAvatar.src = photoBase64;
+            if (shouldSetPhoto && navAvatar) navAvatar.src = updatedUsers[idx].photo;
             showAlert("Profile updated!", "success");
             document.getElementById("editForm").style.display = "block";
             setTimeout(() => {
@@ -391,10 +438,12 @@
               return;
             }
             const reader = new FileReader();
-            reader.onload = (e) => applyEdit(e.target.result);
+            reader.onload = (e) => applyEdit(e.target.result, true);
             reader.readAsDataURL(photoFile);
+          } else if (removePhotoRequested) {
+            applyEdit(DEFAULT_AVATAR, true);
           } else {
-            applyEdit(null);
+            applyEdit(null, false);
           }
         });
     } else {

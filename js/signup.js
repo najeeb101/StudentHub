@@ -114,7 +114,7 @@
         email,
         password,
         bio,
-        photo: null,
+        photo: "../media/user.png",
         following: [],
         gender,
         createdAt: new Date().toISOString(),

@@ -118,6 +118,17 @@ body {
   box-sizing: border-box;
 }
 
+.edit-photo-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.edit-photo-row .edit-input {
+  flex: 1 1 240px;
+}
+
 .edit-input:focus {
   border-color: #2563eb;
 }

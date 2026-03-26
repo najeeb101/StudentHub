@@ -2,6 +2,7 @@
 (function () {
   const USERS_KEY = "sh_users";
   const CURRENT_USER_KEY = "sh_currentUser";
+  const DEFAULT_AVATAR = "../media/user.png";
 
   function safeParse(json, fallback) {
     try {
@@ -16,6 +17,10 @@
     const raw = localStorage.getItem(USERS_KEY);
     if (!raw) return [];
     return safeParse(raw, []);
+  }
+
+  function saveUsers(users) {
+    localStorage.setItem(USERS_KEY, JSON.stringify(users));
   }
 
   function getCurrentUser() {
@@ -92,6 +97,11 @@
     if (found.password !== password) {
       setGlobalAlert("The password you've entered is incorrect.", "error");
       return;
+    }
+
+    if (!found.photo) {
+      found.photo = DEFAULT_AVATAR;
+      saveUsers(users);
     }
 
     setCurrentUser(found);

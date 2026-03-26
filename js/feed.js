@@ -1,4 +1,5 @@
 (function () {
+  const DEFAULT_AVATAR = "../media/user.png";
   const CURRENT_USER_KEY = "sh_currentUser"; // Key for storing the currently logged-in user's data in localStorage/sessionStorage.
   const POSTS_KEY = "sh_posts";
   const USERS_KEY = "sh_users"; // For potential future use if we want to store multiple users or a user directory.
@@ -36,6 +37,19 @@
     localStorage.setItem(USERS_KEY, JSON.stringify(u));
   } // Function to save the list of users to localStorage by converting it to a JSON string.
 
+  function ensureDefaultPhotos(users) {
+    let changed = false;
+    const updated = users.map(user => {
+      if (user && !user.photo) {
+        changed = true;
+        return { ...user, photo: DEFAULT_AVATAR };
+      }
+      return user;
+    });
+    if (changed) saveUsers(updated);
+    return updated;
+  }
+
   function genId(prefix) {
     return prefix +"_" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
   } // Function to generate a unique ID by combining a given prefix with a random string.
@@ -53,9 +67,8 @@
     if (user && user.photo) {
       return user.photo;
     }
-    const seed = encodeURIComponent((user && (user.email || user.name)) || "user");
-    return `https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}&backgroundColor=b6e3f4`;
-  } // Function to determine the avatar image source for a user. If the user has a custom photo, it returns that; otherwise, it generates a unique avatar using the Dicebear Avatars API based on the user's email or name.
+    return DEFAULT_AVATAR;
+  } // Function to determine the avatar image source for a user. If the user has a custom photo, it returns that; otherwise, it uses the default account icon.
 
   function escapeHtml(str) {
     return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -148,7 +161,7 @@
         return `<li class="follow-item">
           <img src="${escapeHtml(avatarSrc(u))}" class="follow-avatar" alt="avatar"/>
           <div class="follow-info">
-            <a href="profile.html?userId=${u.id}" class="follow-name">${escapeHtml(u.name)}</a>
+            <a href="profile.html?id=${u.id}" class="follow-name">${escapeHtml(u.name)}</a>
             <span class="follow-username">@${escapeHtml(u.username || "")}</span>
           </div>
           <button class="btn-secondary-small follow-btn" data-user-id="${u.id}" data-following="${isFollowing}">${isFollowing ? "Unfollow" : "Follow"}</button>
@@ -285,8 +298,12 @@
       return;
     }
 
-    const users = loadUsers();
+    const users = ensureDefaultPhotos(loadUsers());
     user = users.find(u => u.id === user.id) || user; // Sync with latest user data if available
+    if (user && !user.photo) {
+      user.photo = DEFAULT_AVATAR;
+      syncUser(user);
+    }
 
     const usernameEls = document.querySelector(".user-profile .username");
     if(usernameEls) usernameEls.textContent = user.name;
@@ -300,13 +317,13 @@
     }
 
     const profileNavLink = document.querySelector('a[href="profile.html"]');
-    if (profileNavLink) profileNavLink.setAttribute("href", `profile.html?userId=${user.id}`);
+    if (profileNavLink) profileNavLink.setAttribute("href", `profile.html?id=${user.id}`);
 
     const userProfileEls = document.querySelector(".user-profile");
     if (userProfileEls) {
       userProfileEls.style.cursor = "pointer";
       userProfileEls.addEventListener("click", () => {
-        window.location.href = `profile.html?userId=${user.id}`;
+        window.location.href = `profile.html?id=${user.id}`;
       });
     }
 

@@ -1,100 +1,94 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>StudentHub – Feed</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="stylesheet" href="../css/feed.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <title>StudentHub – Feed</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="../css/main.css" />
-  <link rel="stylesheet" href="../css/feed.css" />
-</head>
-
-<body>
-  <!-- Top Navbar -->
-  <header class="navbar">
-    <div class="nav-container">
-      <div class="brand-mark">
-        <img src="../media/StudentHub-logo.png" alt="StudentHub Logo"
-          style="width: 100px; height: 100px; object-fit: contain;" />
-        <span class="brand-text">StudentHub</span>
-      </div>
-      <div class="nav-actions">
-        <div class="user-profile">
-          <span class="username">Alex Student</span>
-          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alex&backgroundColor=b6e3f4" alt="User Avatar"
-            class="avatar" />
+  <body>
+    <!-- Top Navbar -->
+    <header class="navbar">
+      <div class="nav-container">
+        <div class="brand-mark">
+          <img
+            src="../media/StudentHub-logo.png"
+            alt="StudentHub Logo"
+            class="brand-logo"
+          />
+          <span class="brand-text">StudentHub</span>
         </div>
-        <button id="logoutBtn" class="btn-secondary-small" style="margin-left: 16px;">Logout</button>
+        <div class="nav-actions">
+          <div class="user-profile">
+            <span class="username">Alex Student</span>
+            <img
+              src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alex&backgroundColor=b6e3f4"
+              alt="User Avatar"
+              class="avatar"
+            />
+          </div>
+          <button id="logoutBtn" class="btn-secondary-small nav-cta">
+            Logout
+          </button>
+        </div>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <main class="feed-layout">
-    <!-- Left Sidebar -->
-    <aside class="sidebar sidebar-left">
-      <nav class="side-nav">
-        <a href="#" class="nav-item active">
-          <img src="../media/home-button.png" class="nav-icon" alt="Home" /> Home
-        </a>
-        <a href="#" class="nav-item">
-          <img src="../media/notification-bell.png" class="nav-icon" alt="Notifications" /> Notifications
-        </a>
-        <a href="profile.html" class="nav-item">
-          <img src="../media/user.png" class="nav-icon nav-icon-profile" id="navProfileIcon" alt="Profile" /> Profile
-        </a>
-      </nav>
-      <button class="btn-primary btn-compose">Post</button>
-    </aside>
+    <main class="feed-layout">
+      <!-- Left Sidebar -->
+      <aside class="sidebar sidebar-left">
+        <nav class="side-nav">
+          <a href="#" class="nav-item active">
+            <img src="../media/home-button.png" class="nav-icon" alt="Home" />
+            Home
+          </a>
+          <a href="profile.html" class="nav-item">
+            <img
+              src="../media/user.png"
+              class="nav-icon nav-icon-profile"
+              id="navProfileIcon"
+              alt="Profile"
+            />
+            Profile
+          </a>
+        </nav>
+        <button class="btn-primary btn-compose">Post</button>
+      </aside>
 
-    <!-- Main Feed Content -->
-    <section class="feed-main">
-
-      <!-- Create Post Box -->
-      <div class="compose-box">
-        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alex&backgroundColor=b6e3f4" alt="Avatar"
-          class="compose-avatar" />
-        <div class="compose-content">
-          <textarea placeholder="What's happening on campus?" class="compose-input"></textarea>
-          <div class="compose-actions">
-            <button class="btn-primary" type="button">Post</button>
+      <!-- Main Feed Content -->
+      <section class="feed-main">
+        <!-- Create Post Box -->
+        <div class="compose-box">
+          <img
+            src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alex&backgroundColor=b6e3f4"
+            alt="Avatar"
+            class="compose-avatar"
+          />
+          <div class="compose-content">
+            <textarea
+              placeholder="What's happening on campus?"
+              class="compose-input"
+            ></textarea>
+            <div class="compose-actions">
+              <button class="btn-primary" type="button">Post</button>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Feed Stream -->
-      <div class="post-stream"> </div>
-    </section>
+        <!-- Feed Stream -->
+        <div class="post-stream"></div>
+      </section>
 
-    <!-- Right Sidebar -->
-    <aside class="sidebar sidebar-right">
-      <div class="widget">
-        <h3 class="widget-title">Trending on Campus</h3>
-        <ul class="trending-list">
-          <li>
-            <span class="trend-category">Academics</span>
-            <span class="trend-name">#FinalsWeek</span>
-            <span class="trend-stats">1,204 posts</span>
-          </li>
-          <li>
-            <span class="trend-category">Events</span>
-            <span class="trend-name">Spring Fest 2026</span>
-            <span class="trend-stats">855 posts</span>
-          </li>
-          <li>
-            <span class="trend-category">Sports</span>
-            <span class="trend-name">#VarsityMatch</span>
-            <span class="trend-stats">412 posts</span>
-          </li>
-        </ul>
-      </div>
-
-      <div class="widget">
-        <h3 class="widget-title">Who to follow</h3>
-        <ul class="follow-list"></ul>
-      </div>
-    </aside>
-  </main>
-  <script src="../js/feed.js"></script>
-</body>
-
+      <!-- Right Sidebar -->
+      <aside class="sidebar sidebar-right">
+        <div class="widget">
+          <h3 class="widget-title">Who to follow</h3>
+          <ul class="follow-list"></ul>
+        </div>
+      </aside>
+    </main>
+    <script src="../js/feed.js"></script>
+  </body>
 </html>
