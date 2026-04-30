@@ -1,0 +1,6 @@
+.env
+dev.db
+.next
+dist
+out
+node_modules
