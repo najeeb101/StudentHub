@@ -1,5 +1,5 @@
 (function () {
-  const API = "http://localhost:3000";
+  const API = "";
   const DEFAULT_AVATAR = "../media/user.png";
   const CURRENT_USER_KEY = "sh_currentUser";
 

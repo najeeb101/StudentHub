@@ -14,9 +14,10 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "postinstall": "prisma generate",
     "start": "next start",
-    "prisma:init": "bunx prisma init",
-    "db:seed": "bunx prisma db seed"
+    "prisma:init": "prisma init",
+    "db:seed": "prisma db seed"
   },
   "devDependencies": {
     "@types/node": "25.6.0",
