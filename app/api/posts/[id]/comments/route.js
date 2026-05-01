@@ -8,18 +8,20 @@ import { badRequest, json, notFound, readJson } from "../../../_utils";
 export const runtime = "nodejs";
 
 export async function GET(_request, { params }) {
-  const post = await getPostById(params.id);
+  const { id } = await params;
+  const post = await getPostById(id);
 
   if (!post) {
     return notFound("Post not found");
   }
 
-  const comments = await getCommentsByPostId(params.id);
+  const comments = await getCommentsByPostId(id);
   return json(comments);
 }
 
 export async function POST(request, { params }) {
-  const post = await getPostById(params.id);
+  const { id } = await params;
+  const post = await getPostById(id);
 
   if (!post) {
     return notFound("Post not found");
@@ -32,7 +34,7 @@ export async function POST(request, { params }) {
   }
 
   const comment = await createComment({
-    postId: params.id,
+    postId: id,
     authorId: body.authorId,
     text: body.text,
   });

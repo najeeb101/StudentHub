@@ -4,7 +4,8 @@ import { json, notFound } from "../../_utils";
 export const runtime = "nodejs";
 
 export async function GET(_request, { params }) {
-  const post = await getPostById(params.id);
+  const { id } = await params;
+  const post = await getPostById(id);
 
   if (!post) {
     return notFound("Post not found");
@@ -14,12 +15,13 @@ export async function GET(_request, { params }) {
 }
 
 export async function DELETE(_request, { params }) {
-  const post = await getPostById(params.id);
+  const { id } = await params;
+  const post = await getPostById(id);
 
   if (!post) {
     return notFound("Post not found");
   }
 
-  await deletePost(params.id);
+  await deletePost(id);
   return json({ deleted: true });
 }

@@ -547,6 +547,21 @@ body {
   color: #ef4444;
 }
 
+.comment-delete-btn {
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.comment-delete-btn:hover {
+  background-color: #fee2e2;
+  color: #ef4444;
+}
+
 .like-btn.liked {
   color: #ef4444;
 }

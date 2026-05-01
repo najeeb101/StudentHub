@@ -1,141 +1,67 @@
-// StudentHub – front-end only login logic
 (function () {
-  const USERS_KEY = "sh_users";
+  const API = "http://localhost:3000";
   const CURRENT_USER_KEY = "sh_currentUser";
-  const DEFAULT_AVATAR = "../media/user.png";
 
-  function safeParse(json, fallback) {
-    try {
-      const parsed = JSON.parse(json);
-      return Array.isArray(fallback) && !Array.isArray(parsed) ? fallback : parsed;
-    } catch {
-      return fallback;
-    }
-  }
-
-  function loadUsers() {
-    const raw = localStorage.getItem(USERS_KEY);
-    if (!raw) return [];
-    return safeParse(raw, []);
-  }
-
-  function saveUsers(users) {
-    localStorage.setItem(USERS_KEY, JSON.stringify(users));
+  function setCurrentUser(user) {
+    if (user) localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
+    else localStorage.removeItem(CURRENT_USER_KEY);
   }
 
   function getCurrentUser() {
-    const raw = localStorage.getItem(CURRENT_USER_KEY);
-    if (!raw) return null;
-    return safeParse(raw, null);
-  }
-
-  function setCurrentUser(userOrNull) {
-    if (!userOrNull) {
-      localStorage.removeItem(CURRENT_USER_KEY);
-      return;
-    }
-    localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(userOrNull));
-  }
-
-  function clearFieldErrors() {
-    const errorEls = document.querySelectorAll(".field-error");
-    errorEls.forEach((el) => {
-      el.textContent = "";
-    });
+    try { return JSON.parse(localStorage.getItem(CURRENT_USER_KEY)); } catch { return null; }
   }
 
   function setGlobalAlert(message, type) {
-    const alert = document.getElementById("authAlert");
-    if (!alert) return;
-    if (!message) {
-      alert.textContent = "";
-      alert.className = "alert";
-      return;
-    }
-    alert.textContent = message;
-    alert.className = "alert alert--visible " + (type === "error" ? "alert--error" : "alert--success");
+    const el = document.getElementById("authAlert");
+    if (!el) return;
+    if (!message) { el.textContent = ""; el.className = "alert"; return; }
+    el.textContent = message;
+    el.className = "alert alert--visible " + (type === "error" ? "alert--error" : "alert--success");
   }
 
-  function handleLoginSubmit(event) {
+  function clearFieldErrors() {
+    document.querySelectorAll(".field-error").forEach(el => { el.textContent = ""; });
+  }
+
+  async function handleLoginSubmit(event) {
     event.preventDefault();
     clearFieldErrors();
 
-    const emailInput = document.getElementById("loginEmail");
-    const passwordInput = document.getElementById("loginPassword");
+    const email = document.getElementById("loginEmail")?.value.trim().toLowerCase();
+    const password = document.getElementById("loginPassword")?.value;
     const emailError = document.getElementById("loginEmailError");
     const passwordError = document.getElementById("loginPasswordError");
 
-    if (!emailInput || !passwordInput) return;
-
-    const email = emailInput.value.trim().toLowerCase();
-    const password = passwordInput.value;
-
     let hasError = false;
-
-    if (!email) {
-      emailError.textContent = "Email is required.";
-      hasError = true;
-    }
-
-    if (!password) {
-      passwordError.textContent = "Password is required.";
-      hasError = true;
-    }
-
+    if (!email) { emailError.textContent = "Email is required."; hasError = true; }
+    if (!password) { passwordError.textContent = "Password is required."; hasError = true; }
     if (hasError) return;
 
-    const users = loadUsers();
-    const found = users.find(
-      (u) => typeof u.email === "string" && u.email.toLowerCase() === email
-    );
-
-    if (!found) {
-      setGlobalAlert("The email address you entered isn't connected to an account.", "error");
-      return;
-    }
-
-    if (found.password !== password) {
-      setGlobalAlert("The password you've entered is incorrect.", "error");
-      return;
-    }
-
-    if (!found.photo) {
-      found.photo = DEFAULT_AVATAR;
-      saveUsers(users);
-    }
-
-    setCurrentUser(found);
-
-    emailInput.value = "";
-    passwordInput.value = "";
-
-    setGlobalAlert("Logged in successfully. Redirecting...", "success");
-    setTimeout(() => {
-      window.location.href = "feed.html";
-    }, 500);
-  }
-
-  function restoreSessionFromStorage() {
-    const localUser = getCurrentUser();
-    const sessionRaw = sessionStorage.getItem(CURRENT_USER_KEY);
-    const sessionUser = sessionRaw ? safeParse(sessionRaw, null) : null;
-    const activeUser = localUser || sessionUser;
-    if (activeUser) {
-      window.location.href = "feed.html";
+    try {
+      const res = await fetch(`${API}/api/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setGlobalAlert(data.error || "Login failed.", "error");
+        return;
+      }
+      setCurrentUser(data);
+      setGlobalAlert("Logged in successfully. Redirecting...", "success");
+      setTimeout(() => { window.location.href = "feed.html"; }, 500);
+    } catch {
+      setGlobalAlert("Could not connect to server. Is the app running?", "error");
     }
   }
 
-  function initAuthUI() {
-    const loginForm = document.getElementById("loginForm");
-    if (loginForm) {
-      loginForm.addEventListener("submit", handleLoginSubmit);
-    }
-    restoreSessionFromStorage();
+  function init() {
+    if (getCurrentUser()) { window.location.href = "feed.html"; return; }
+    const form = document.getElementById("loginForm");
+    if (form) form.addEventListener("submit", handleLoginSubmit);
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initAuthUI);
-  } else {
-    initAuthUI();
-  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+  else init();
 })();
