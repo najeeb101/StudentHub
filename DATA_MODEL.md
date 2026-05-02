@@ -1,6 +1,18 @@
 # StudentHub Data Model
 
-This diagram is based on the Prisma schema in [schema.prisma](C:\Users\damil\OneDrive - Qatar University\FInal Year First Sem\CMPS 350\StudentHub\prisma\schema.prisma:1).
+## Team Member Contributions
+
+The following table summarizes each team member's contribution to this phase of the project.
+
+
+| Team Member                  | QUID      | Contribution                                               | Percentage |
+| ---------------------------- | --------- | ---------------------------------------------------------- | ---------- |
+| Najeeb Abdurahman Abdi       | 202307172 | Worked on the statistics use-case and Phase 1 integration. | 25%        |
+| Oluwadamilola Olajide        | 202109926 | Worked on the database, testing, and query design.         | 25%        |
+| Majid Marzouq                | 202309136 | Worked on the database, testing, and query design.         | 25%        |
+| Mohamed Othman Aoussat Ayari | 202304380 | Worked on the statistics use-case and Phase 1 integration. | 25%        |
+
+Total contribution: 100%.
 
 ```mermaid
 erDiagram
