@@ -17,3 +17,19 @@ export function notFound(message = "Not found") {
 export function badRequest(message = "Bad request") {
   return json({ error: message }, { status: 400 });
 }
+
+export function forbidden(message = "Forbidden") {
+  return json({ error: message }, { status: 403 });
+}
+
+export function conflict(message = "Conflict") {
+  return json({ error: message }, { status: 409 });
+}
+
+export function serverError(message = "Server error") {
+  return json({ error: message }, { status: 500 });
+}
+
+export function isUniqueConstraintError(error) {
+  return error?.code === "P2002";
+}

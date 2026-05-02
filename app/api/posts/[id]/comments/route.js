@@ -2,6 +2,7 @@ import {
   createComment,
   getCommentsByPostId,
   getPostById,
+  getUserById,
 } from "../../../../../lib/dataRepository.js";
 import { badRequest, json, notFound, readJson } from "../../../_utils";
 
@@ -33,10 +34,20 @@ export async function POST(request, { params }) {
     return badRequest("authorId and text are required");
   }
 
+  const text = body.text.trim();
+  if (!text) {
+    return badRequest("text cannot be blank");
+  }
+
+  const author = await getUserById(body.authorId);
+  if (!author) {
+    return notFound("Author not found");
+  }
+
   const comment = await createComment({
     postId: id,
     authorId: body.authorId,
-    text: body.text,
+    text,
   });
 
   return json(comment, { status: 201 });

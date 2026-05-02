@@ -378,7 +378,10 @@
         }
 
         if (btn.classList.contains("delete-btn")) {
-          await apiFetch(`/api/posts/${postId}`, { method: "DELETE" });
+          await apiFetch(`/api/posts/${postId}`, {
+            method: "DELETE",
+            body: JSON.stringify({ userId: currentUser.id }),
+          });
           const updated = await apiFetch(`/api/users/${profileId}`);
           document.getElementById("statPosts").textContent =
             updated._count?.posts ?? 0;

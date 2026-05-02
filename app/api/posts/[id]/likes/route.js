@@ -1,4 +1,8 @@
-import { getPostById, toggleLike } from "../../../../../lib/dataRepository.js";
+import {
+  getPostById,
+  getUserById,
+  toggleLike,
+} from "../../../../../lib/dataRepository.js";
 import { badRequest, json, notFound, readJson } from "../../../_utils";
 
 export const runtime = "nodejs";
@@ -15,6 +19,11 @@ export async function POST(request, { params }) {
 
   if (!body?.userId) {
     return badRequest("userId is required");
+  }
+
+  const user = await getUserById(body.userId);
+  if (!user) {
+    return notFound("User not found");
   }
 
   const result = await toggleLike(id, body.userId);
