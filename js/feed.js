@@ -260,7 +260,10 @@
         }
 
         if (btn.classList.contains("delete-btn")) {
-          await apiFetch(`/api/posts/${postId}`, { method: "DELETE" });
+          await apiFetch(`/api/posts/${postId}`, {
+            method: "DELETE",
+            body: JSON.stringify({ userId: user.id }),
+          });
           posts = await apiFetch("/api/posts");
           renderFeed(posts, user, followingIds);
         }
