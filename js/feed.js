@@ -172,17 +172,24 @@
     });
 
     // Fetch data
-    let [posts, users] = await Promise.all([
-      apiFetch("/api/posts"),
-      apiFetch("/api/users"),
-    ]);
+    let posts, users;
+    try {
+      [posts, users] = await Promise.all([
+        apiFetch("/api/posts"),
+        apiFetch("/api/users"),
+      ]);
+    } catch (err) {
+      const stream = document.querySelector(".post-stream");
+      if (stream)
+        stream.innerHTML = `<p style="color:#e53e3e;text-align:center;padding:32px;">Failed to load feed: ${err.message}</p>`;
+      console.error("initFeed fetch error:", err);
+      return;
+    }
     let followingData = [];
     try {
       followingData = await apiFetch(`/api/users/${user.id}/following`);
-    } catch (error) {
-      if (!(error instanceof Error) || !error.message.includes("404")) {
-        throw error;
-      }
+    } catch {
+      followingData = [];
     }
 
     const activeUser = users.find((u) => u.id === user.id);
@@ -318,7 +325,13 @@
     }
   }
 
+  function safeInitFeed() {
+    initFeed().catch((err) => {
+      console.error("initFeed failed:", err);
+    });
+  }
+
   if (document.readyState === "loading")
-    document.addEventListener("DOMContentLoaded", initFeed);
-  else initFeed();
+    document.addEventListener("DOMContentLoaded", safeInitFeed);
+  else safeInitFeed();
 })();
