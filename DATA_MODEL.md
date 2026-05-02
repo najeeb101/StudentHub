@@ -261,4 +261,33 @@ Result:
 hana_o  maya_k
 lena_p  sarah_a
 omar_h  sarah_a
+
 ```
+
+7. Using a second account to follow the first account
+
+![1777747444043](images/DATA_MODEL/1777747444043.png)
+
+8. Following another account to show that only accounts that I follow have their posts displayed
+
+![1777747567705](images/DATA_MODEL/1777747567705.png)
+
+9. Viewing my profile of the second account to check the posts I have
+
+![1777747603075](images/DATA_MODEL/1777747603075.png)
+
+10. Trying to edit my profile
+
+![1777747828504](images/DATA_MODEL/1777747828504.png)
+
+11. Added a bio and saved changes
+
+![1777747860774](images/DATA_MODEL/1777747860774.png)
+
+12. Showing feed when I do not follow anyone
+
+![1777747968752](images/DATA_MODEL/1777747968752.png)
+
+13. Showing that I now have a follower after I followed myself from my other account
+
+![1777748113355](images/DATA_MODEL/1777748113355.png)
