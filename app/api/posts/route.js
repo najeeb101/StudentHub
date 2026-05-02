@@ -1,4 +1,8 @@
-import { createPost, getPosts, getPostsByAuthor } from "../../../lib/dataRepository.js";
+import {
+  createPost,
+  getPosts,
+  getPostsByAuthor,
+} from "../../../lib/dataRepository.js";
 import { badRequest, json, readJson } from "../_utils";
 
 export const runtime = "nodejs";
